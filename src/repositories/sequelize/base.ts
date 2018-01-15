@@ -84,7 +84,7 @@ export class BaseRepository {
                 allowNull: true,
                 type: Sequelize.STRING,
             },
-            id: {
+            key: {
                 allowNull: false,
                 type: Sequelize.STRING,
             },

@@ -11,6 +11,20 @@ export class ProfileService {
     ) {
 
     }
+
+    public async create(profile: Profile): Promise<Profile> {
+
+        const existingProfile: Profile = await this.profileRepository.find(profile.id);
+
+        if (existingProfile) {
+            throw new Error('id already exist');
+        }
+
+        profile = await this.profileRepository.create(profile);
+
+        return profile;
+    }
+
     public async find(id: string): Promise<Profile> {
         const profile: Profile = await this.profileRepository.find(id);
 

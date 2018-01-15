@@ -13,7 +13,7 @@ export class ProfileRouter extends BaseRouter {
     public static async get(req: express.Request, res: express.Response) {
         try {
 
-            const profile: Profile = await ProfileRouter.getProfileService().find(req.query.id);
+            const profile: Profile = await BaseRouter.getProfileService().find(req.query.id);
 
             res.json(profile);
             
@@ -25,12 +25,18 @@ export class ProfileRouter extends BaseRouter {
         }
     }
 
-    protected static getProfileService(): ProfileService {
+    public static async post(req: express.Request, res: express.Response) {
+        try {
 
-        const profileRepository: ProfileRepository = new ProfileRepository(config.database.host, config.database.username, config.database.password);
+            const profile: Profile = await BaseRouter.getProfileService().create(req.body);
 
-        const profileService: ProfileService = new ProfileService(profileRepository);
-
-        return profileService;
+            res.json(profile);
+            
+        } catch (err) {
+            res.status(500).json({
+                message: err.message,
+                stack: err.stack,
+            });
+        }
     }
 }
