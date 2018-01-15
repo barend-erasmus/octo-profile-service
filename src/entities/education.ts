@@ -5,7 +5,6 @@ export class Education {
         public institutionName: string,
         public qualification: string,
         public to: Date,
-
     ) {
 
     }

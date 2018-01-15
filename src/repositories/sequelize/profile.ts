@@ -14,11 +14,22 @@ export class ProfileRepository extends BaseRepository implements IProfileReposit
                 {
                     model: BaseRepository.models.Education,
                 },
+                {
+                    model: BaseRepository.models.PortfolioItem,
+                },
+                {
+                    model: BaseRepository.models.Skill,
+                },
+                {
+                    model: BaseRepository.models.WorkExperience,
+                },
             ],
             where: {
                 id,
             },
         });
+
+        console.log(profile);
 
         if (!profile) {
             return null;
