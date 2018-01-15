@@ -1,6 +1,5 @@
 import * as express from 'express';
 import { config } from './../config';
-import { BaseRouter } from './base';
 
 import { ProfileService } from './../services/profile';
 
@@ -8,14 +7,16 @@ import { ProfileRepository } from './../repositories/sequelize/profile';
 
 import { Profile } from '../entities/profile';
 
-export class ProfileRouter extends BaseRouter {
+export class BaseRouter {
 
-    public static async get(req: express.Request, res: express.Response) {
+    public static async sync(req: express.Request, res: express.Response) {
         try {
 
-            const profile: Profile = await ProfileRouter.getProfileService().find(req.query.id);
+            const profileRepository: ProfileRepository = new ProfileRepository(config.database.host, config.database.username, config.database.password);
 
-            res.json(profile);
+            await profileRepository.sync();
+
+            res.json(true);
             
         } catch (err) {
             res.status(500).json({

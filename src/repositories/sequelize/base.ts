@@ -72,15 +72,20 @@ export class BaseRepository {
     constructor(private host: string, private username: string, private password: string) {
 
         if (!BaseRepository.sequelize) {
-            BaseRepository.sequelize = new Sequelize('octo-profile-service', username, password, {
-                dialect: 'postgres',
-                host,
-                logging: false,
-                pool: {
-                    idle: 10000,
-                    max: 5,
-                    min: 0,
-                },
+            // BaseRepository.sequelize = new Sequelize('octo-profile-service', username, password, {
+            //     dialect: 'postgres',
+            //     host,
+            //     logging: false,
+            //     pool: {
+            //         idle: 10000,
+            //         max: 5,
+            //         min: 0,
+            //     },
+            // });
+
+            BaseRepository.sequelize = new Sequelize(null, null, null, {
+                dialect: 'sqlite',
+                storage: 'octo-profile.sqlite',
             });
 
             BaseRepository.defineModels();

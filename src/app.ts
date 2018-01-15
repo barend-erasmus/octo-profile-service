@@ -9,6 +9,7 @@ import * as bodyParser from 'body-parser';
 
 // Imports routes
 import { ProfileRouter } from './routes/profile';
+import { BaseRouter } from './routes/base';
 
 const argv = yargs.argv;
 const app = express();
@@ -36,7 +37,9 @@ app.use(bodyParser.json({ limit: '50mb' }));
 //     next();
 // }
 
-app.post('/api/profile', ProfileRouter.get);
+app.get('/api/database/sync', BaseRouter.sync);
+
+app.get('/api/profile', ProfileRouter.get);
 
 app.use('/api/docs', express.static(path.join(__dirname, './../apidoc')));
 app.use('/api/coverage', express.static(path.join(__dirname, './../coverage/lcov-report')));
