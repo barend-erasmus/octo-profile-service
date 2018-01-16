@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import 'mocha';
 
-import { BaseRepository } from './../repositories/sequelize/base';
 import { UserRepository } from '../repositories/sequelize/user';
+import { BaseRepository } from './../repositories/sequelize/base';
 
 import { UserService } from './user';
 
@@ -54,7 +54,7 @@ describe('UserService', () => {
             const result: boolean = await userService.authenticate('existing-username', 'correct-password');
 
             expect(result).to.be.true;
-            
+
         });
 
         it('should return false given non-existing username', async () => {
@@ -185,7 +185,6 @@ describe('UserService', () => {
 
         });
 
-     
     });
-    
+
 });

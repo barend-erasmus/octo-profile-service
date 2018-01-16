@@ -1,12 +1,12 @@
 {
   "extends": "tslint:latest",
   "defaultSeverity": "error",
-  "rules": {
-    "quotemark": "single",
-    "max-line-length": 150,
-    "no-this-assignment": false,
-    "space-before-function-paren": false,
+  "rules": {   
+    "max-line-length": [true, 270],
+    "no-console": false,
+    "no-implicit-dependencies": false,
+    "no-string-literal": false,
     "no-unused-expression": false,
-    "no-bitwise": false
+    "quotemark": [true, "single"]
   }
 }

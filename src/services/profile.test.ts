@@ -1,9 +1,9 @@
 import { expect } from 'chai';
 import 'mocha';
 
+import { UserRepository } from '../repositories/sequelize/user';
 import { BaseRepository } from './../repositories/sequelize/base';
 import { ProfileRepository } from './../repositories/sequelize/profile';
-import { UserRepository } from '../repositories/sequelize/user';
 
 import { ProfileService } from './profile';
 import { UserService } from './user';
@@ -186,7 +186,7 @@ describe('ProfileService', () => {
             const profile: Profile = await profileService.update(new Profile('updated-about', null, null, null, [], null, null, null, 'existing-id', null, null, null, null, [], [], null, null, null, null, []), 'existing-username');
 
             expect(profile.about).to.be.eq('updated-about');
-            
+
         });
 
         it('should update address', async () => {
@@ -198,7 +198,7 @@ describe('ProfileService', () => {
             const profile: Profile = await profileService.update(new Profile(null, 'updated-address', null, null, [], null, null, null, 'existing-id', null, null, null, null, [], [], null, null, null, null, []), 'existing-username');
 
             expect(profile.address).to.be.eq('updated-address');
-            
+
         });
     });
 

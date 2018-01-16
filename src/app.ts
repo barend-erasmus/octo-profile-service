@@ -8,8 +8,8 @@ import { config } from './config';
 import * as bodyParser from 'body-parser';
 
 // Imports routes
-import { ProfileRouter } from './routes/profile';
 import { BaseRouter } from './routes/base';
+import { ProfileRouter } from './routes/profile';
 
 const argv = yargs.argv;
 const app = express();

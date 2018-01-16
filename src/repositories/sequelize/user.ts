@@ -11,20 +11,20 @@ export class UserRepository extends BaseRepository implements IUserRepository {
     }
 
     public async create(user: User): Promise<User> {
-                
+
         const result: any = await BaseRepository.models.User.create({
-            username: user.username,
             password: user.password,
+            username: user.username,
         }, {
         });
 
         return user;
     }
-    
+
     public async find(username: string): Promise<User> {
         const user: any = await BaseRepository.models.User.find({
             where: {
-                username: username,
+                username,
             },
         });
 

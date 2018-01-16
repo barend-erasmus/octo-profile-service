@@ -3,8 +3,8 @@ import { config } from './../config';
 
 import { ProfileService } from './../services/profile';
 
-import { ProfileRepository } from './../repositories/sequelize/profile';
 import { UserRepository } from '../repositories/sequelize/user';
+import { ProfileRepository } from './../repositories/sequelize/profile';
 
 import { Profile } from '../entities/profile';
 
@@ -18,7 +18,7 @@ export class BaseRouter {
             await profileRepository.sync();
 
             res.json(true);
-            
+
         } catch (err) {
             res.status(500).json({
                 message: err.message,

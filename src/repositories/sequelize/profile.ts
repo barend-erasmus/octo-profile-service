@@ -2,9 +2,9 @@ import { BaseRepository } from './base';
 
 import { IProfileRepository } from './../profile';
 
-import { Profile } from '../../entities/profile';
 import { Education } from '../../entities/education';
 import { PortfolioItem } from '../../entities/portfolio-item';
+import { Profile } from '../../entities/profile';
 import { Skill } from '../../entities/skill';
 import { WorkExperience } from '../../entities/work-experience';
 
@@ -31,8 +31,8 @@ export class ProfileRepository extends BaseRepository implements IProfileReposit
             emailAddress: profile.emailAddress,
             firstName: profile.firstName,
             googlePlusLink: profile.googlePlusLink,
-            key: profile.id,
             image: profile.image,
+            key: profile.id,
             lastName: profile.lastName,
             linkedInLink: profile.linkedInLink,
             message: profile.message,
@@ -59,7 +59,6 @@ export class ProfileRepository extends BaseRepository implements IProfileReposit
                     },
                 ],
             });
-
 
         return profile;
     }
@@ -146,7 +145,7 @@ export class ProfileRepository extends BaseRepository implements IProfileReposit
             await BaseRepository.models.Education.destroy({
                 where: {
                     id: education.id,
-                }
+                },
             });
         }
 
@@ -154,7 +153,7 @@ export class ProfileRepository extends BaseRepository implements IProfileReposit
             await BaseRepository.models.PortfolioItem.destroy({
                 where: {
                     id: item.id,
-                }
+                },
             });
         }
 
@@ -162,7 +161,7 @@ export class ProfileRepository extends BaseRepository implements IProfileReposit
             await BaseRepository.models.Skill.destroy({
                 where: {
                     id: skill.id,
-                }
+                },
             });
         }
 
@@ -170,7 +169,7 @@ export class ProfileRepository extends BaseRepository implements IProfileReposit
             await BaseRepository.models.WorkExperience.destroy({
                 where: {
                     id: workExperience.id,
-                }
+                },
             });
         }
 

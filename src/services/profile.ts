@@ -41,7 +41,7 @@ export class ProfileService {
         const profile: Profile = await this.profileRepository.find(id);
 
         return profile;
-        
+
     }
 
     public async update(profile: Profile, username: string): Promise<Profile> {

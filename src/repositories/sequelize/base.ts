@@ -85,13 +85,13 @@ export class BaseRepository {
                 allowNull: true,
                 type: Sequelize.STRING,
             },
-            key: {
-                allowNull: false,
-                type: Sequelize.STRING,
-            },
             image: {
                 allowNull: true,
                 type: Sequelize.TEXT,
+            },
+            key: {
+                allowNull: false,
+                type: Sequelize.STRING,
             },
             lastName: {
                 allowNull: true,

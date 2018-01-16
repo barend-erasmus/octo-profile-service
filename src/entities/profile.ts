@@ -1,7 +1,7 @@
-import { WorkExperience } from './work-experience';
 import { Education } from './education';
-import { Skill } from './skill';
 import { PortfolioItem } from './portfolio-item';
+import { Skill } from './skill';
+import { WorkExperience } from './work-experience';
 
 export class Profile {
     constructor(
