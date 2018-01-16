@@ -1,8 +1,8 @@
-import { config } from './../config';
-import { IProfileRepository } from '../repositories/profile';
-import { IUserRepository } from '../repositories/user';
 import { Profile } from '../entities/profile';
 import { User } from '../entities/user';
+import { IProfileRepository } from '../repositories/profile';
+import { IUserRepository } from '../repositories/user';
+import { config } from './../config';
 
 export class ProfileService {
 

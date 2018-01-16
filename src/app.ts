@@ -1,10 +1,10 @@
-import * as express from 'express';
-import * as path from 'path';
-import * as yargs from 'yargs';
-import * as jsonwebtoken from 'jsonwebtoken';
-import { config } from './config';
 import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
+import * as express from 'express';
+import * as jsonwebtoken from 'jsonwebtoken';
+import * as path from 'path';
+import * as yargs from 'yargs';
+import { config } from './config';
 import { BaseRouter } from './routes/base';
 import { ProfileRouter } from './routes/profile';
 import { UserRouter } from './routes/user';
@@ -48,7 +48,7 @@ app.route('/api/profile')
 
 app.route('/api/user')
     .get(UserRouter.get)
-    .post(UserRouter.post)
+    .post(UserRouter.post);
 
 app.use('/api/docs', express.static(path.join(__dirname, './../apidoc')));
 app.use('/api/coverage', express.static(path.join(__dirname, './../coverage/lcov-report')));

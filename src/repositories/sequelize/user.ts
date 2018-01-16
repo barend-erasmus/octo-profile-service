@@ -1,6 +1,6 @@
-import { BaseRepository } from './base';
-import { IUserRepository } from './../user';
 import { User } from '../../entities/user';
+import { IUserRepository } from './../user';
+import { BaseRepository } from './base';
 
 export class UserRepository extends BaseRepository implements IUserRepository {
 

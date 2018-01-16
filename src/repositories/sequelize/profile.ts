@@ -1,10 +1,10 @@
-import { BaseRepository } from './base';
-import { IProfileRepository } from './../profile';
 import { Education } from '../../entities/education';
 import { PortfolioItem } from '../../entities/portfolio-item';
 import { Profile } from '../../entities/profile';
 import { Skill } from '../../entities/skill';
 import { WorkExperience } from '../../entities/work-experience';
+import { IProfileRepository } from './../profile';
+import { BaseRepository } from './base';
 
 export class ProfileRepository extends BaseRepository implements IProfileRepository {
 

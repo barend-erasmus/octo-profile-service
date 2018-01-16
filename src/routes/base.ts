@@ -1,9 +1,9 @@
 import * as express from 'express';
-import { config } from './../config';
-import { UserService } from '../services/user';
-import { ProfileService } from './../services/profile';
 import { UserRepository } from '../repositories/sequelize/user';
+import { UserService } from '../services/user';
+import { config } from './../config';
 import { ProfileRepository } from './../repositories/sequelize/profile';
+import { ProfileService } from './../services/profile';
 
 export class BaseRouter {
 

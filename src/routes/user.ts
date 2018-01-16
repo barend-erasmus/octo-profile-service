@@ -1,8 +1,8 @@
 import * as express from 'express';
 import * as jsonwebtoken from 'jsonwebtoken';
+import { User } from '../entities/user';
 import { config } from './../config';
 import { BaseRouter } from './base';
-import { User } from '../entities/user';
 
 export class UserRouter extends BaseRouter {
 

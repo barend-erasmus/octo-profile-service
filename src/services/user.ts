@@ -1,7 +1,7 @@
 import * as crypto from 'crypto';
-import { config } from './../config';
-import { IUserRepository } from '../repositories/user';
 import { User } from '../entities/user';
+import { IUserRepository } from '../repositories/user';
+import { config } from './../config';
 
 export class UserService {
 

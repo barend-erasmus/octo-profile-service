@@ -1,7 +1,7 @@
 import * as express from 'express';
+import { Profile } from '../entities/profile';
 import { config } from './../config';
 import { BaseRouter } from './base';
-import { Profile } from '../entities/profile';
 
 export class ProfileRouter extends BaseRouter {
 
