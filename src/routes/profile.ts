@@ -28,7 +28,7 @@ export class ProfileRouter extends BaseRouter {
     public static async post(req: express.Request, res: express.Response) {
         try {
 
-            const profile: Profile = await BaseRouter.getProfileService().create(req.body);
+            const profile: Profile = await BaseRouter.getProfileService().create(req.body, req['user']);
 
             res.json(profile);
             

@@ -1,5 +1,7 @@
-import { IProfileRepository } from './../profile';
 import { BaseRepository } from './base';
+
+import { IProfileRepository } from './../profile';
+
 import { Profile } from '../../entities/profile';
 import { Education } from '../../entities/education';
 import { PortfolioItem } from '../../entities/portfolio-item';
@@ -13,6 +15,13 @@ export class ProfileRepository extends BaseRepository implements IProfileReposit
     }
 
     public async create(profile: Profile): Promise<Profile> {
+
+        const user: any = await BaseRepository.models.User.find({
+            where: {
+                username: profile.username,
+            },
+        });
+
         const result: any = await BaseRepository.models.Profile.create({
             about: profile.about,
             address: profile.address,
@@ -31,6 +40,7 @@ export class ProfileRepository extends BaseRepository implements IProfileReposit
             skills: profile.skills.map((skill) => new Skill(skill.description, skill.level, skill.name, skill.years)),
             twitterLink: profile.twitterLink,
             type: profile.type,
+            userId: user.id,
             website: profile.website,
             workExperiences: profile.workExperiences.map((workExperience) => new WorkExperience(workExperience.companyName, workExperience.currentlyEmployed, workExperience.description, workExperience.from, workExperience.location, workExperience.position, workExperience.to)),
         }, {
@@ -97,6 +107,7 @@ export class ProfileRepository extends BaseRepository implements IProfileReposit
             profile.skills.map((skill) => new Skill(skill.description, skill.level, skill.name, skill.years)),
             profile.twitterLink,
             profile.type,
+            null,
             profile.website,
             profile.workExperiences.map((workExperience) => new WorkExperience(workExperience.companyName, workExperience.currentlyEmployed, workExperience.description, workExperience.from, workExperience.location, workExperience.position, workExperience.to)),
         );

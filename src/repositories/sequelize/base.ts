@@ -6,6 +6,7 @@ export class BaseRepository {
         PortfolioItem: Sequelize.Model<{}, {}>,
         Profile: Sequelize.Model<{}, {}>,
         Skill: Sequelize.Model<{}, {}>,
+        User: Sequelize.Model<{}, {}>,
         WorkExperience: Sequelize.Model<{}, {}>,
     } = null;
 
@@ -137,6 +138,17 @@ export class BaseRepository {
             },
         });
 
+        const User = BaseRepository.sequelize.define('user', {
+            password: {
+                allowNull: true,
+                type: Sequelize.STRING,
+            },
+            username: {
+                allowNull: true,
+                type: Sequelize.STRING,
+            },
+        });
+
         const WorkExperience = BaseRepository.sequelize.define('workExperience', {
             companyName: {
                 allowNull: true,
@@ -180,11 +192,15 @@ export class BaseRepository {
         Profile.hasMany(WorkExperience, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
         WorkExperience.belongsTo(Profile, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
 
+        User.hasMany(Profile, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
+        Profile.belongsTo(User, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
+
         this.models = {
             Education,
             PortfolioItem,
             Profile,
             Skill,
+            User,
             WorkExperience,
         };
     }
@@ -205,6 +221,7 @@ export class BaseRepository {
 
             BaseRepository.sequelize = new Sequelize(null, null, null, {
                 dialect: 'sqlite',
+                logging: false,
                 storage: 'octo-profile.sqlite',
             });
 

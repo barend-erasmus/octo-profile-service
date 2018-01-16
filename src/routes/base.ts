@@ -4,6 +4,7 @@ import { config } from './../config';
 import { ProfileService } from './../services/profile';
 
 import { ProfileRepository } from './../repositories/sequelize/profile';
+import { UserRepository } from '../repositories/sequelize/user';
 
 import { Profile } from '../entities/profile';
 
@@ -29,8 +30,9 @@ export class BaseRouter {
     protected static getProfileService(): ProfileService {
 
         const profileRepository: ProfileRepository = new ProfileRepository(config.database.host, config.database.username, config.database.password);
+        const userRepository: UserRepository = new UserRepository(config.database.host, config.database.username, config.database.password);
 
-        const profileService: ProfileService = new ProfileService(profileRepository);
+        const profileService: ProfileService = new ProfileService(profileRepository, userRepository);
 
         return profileService;
     }
