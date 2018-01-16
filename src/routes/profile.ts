@@ -39,4 +39,19 @@ export class ProfileRouter extends BaseRouter {
             });
         }
     }
+
+    public static async put(req: express.Request, res: express.Response) {
+        try {
+
+            const profile: Profile = await BaseRouter.getProfileService().update(req.body, req['user']);
+
+            res.json(profile);
+            
+        } catch (err) {
+            res.status(500).json({
+                message: err.message,
+                stack: err.stack,
+            });
+        }
+    }
 }

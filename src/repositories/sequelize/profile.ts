@@ -27,7 +27,7 @@ export class ProfileRepository extends BaseRepository implements IProfileReposit
             address: profile.address,
             birthDate: profile.birthDate,
             contactNumber: profile.contactNumber,
-            education: profile.education.map((education) => new Education(education.description, education.from, education.institutionName, education.qualification, education.to)),
+            education: profile.education,
             emailAddress: profile.emailAddress,
             firstName: profile.firstName,
             googlePlusLink: profile.googlePlusLink,
@@ -36,34 +36,34 @@ export class ProfileRepository extends BaseRepository implements IProfileReposit
             lastName: profile.lastName,
             linkedInLink: profile.linkedInLink,
             message: profile.message,
-            portfolioItems: profile.portfolio.map((portfolioItem) => new PortfolioItem(portfolioItem.description, portfolioItem.image, portfolioItem.link, portfolioItem.name)),
-            skills: profile.skills.map((skill) => new Skill(skill.description, skill.level, skill.name, skill.years)),
+            portfolioItems: profile.portfolio,
+            skills: profile.skills,
             twitterLink: profile.twitterLink,
             type: profile.type,
             userId: user.id,
             website: profile.website,
-            workExperiences: profile.workExperiences.map((workExperience) => new WorkExperience(workExperience.companyName, workExperience.currentlyEmployed, workExperience.description, workExperience.from, workExperience.location, workExperience.position, workExperience.to)),
+            workExperiences: profile.workExperiences,
         }, {
-            include: [
-                {
-                    model: BaseRepository.models.Education,
-                },
-                {
-                    model: BaseRepository.models.PortfolioItem,
-                },
-                {
-                    model: BaseRepository.models.Skill,
-                },
-                {
-                    model: BaseRepository.models.WorkExperience,
-                },
-            ],
-        });
+                include: [
+                    {
+                        model: BaseRepository.models.Education,
+                    },
+                    {
+                        model: BaseRepository.models.PortfolioItem,
+                    },
+                    {
+                        model: BaseRepository.models.Skill,
+                    },
+                    {
+                        model: BaseRepository.models.WorkExperience,
+                    },
+                ],
+            });
 
-        
+
         return profile;
     }
-    
+
     public async find(id: string): Promise<Profile> {
         const profile: any = await BaseRepository.models.Profile.find({
             include: [
@@ -75,6 +75,9 @@ export class ProfileRepository extends BaseRepository implements IProfileReposit
                 },
                 {
                     model: BaseRepository.models.Skill,
+                },
+                {
+                    model: BaseRepository.models.User,
                 },
                 {
                     model: BaseRepository.models.WorkExperience,
@@ -107,9 +110,103 @@ export class ProfileRepository extends BaseRepository implements IProfileReposit
             profile.skills.map((skill) => new Skill(skill.description, skill.level, skill.name, skill.years)),
             profile.twitterLink,
             profile.type,
-            null,
+            profile.user.username,
             profile.website,
             profile.workExperiences.map((workExperience) => new WorkExperience(workExperience.companyName, workExperience.currentlyEmployed, workExperience.description, workExperience.from, workExperience.location, workExperience.position, workExperience.to)),
         );
+    }
+
+    public async update(profile: Profile): Promise<Profile> {
+
+        const existingProfile: any = await BaseRepository.models.Profile.find({
+            include: [
+                {
+                    model: BaseRepository.models.Education,
+                },
+                {
+                    model: BaseRepository.models.PortfolioItem,
+                },
+                {
+                    model: BaseRepository.models.Skill,
+                },
+                {
+                    model: BaseRepository.models.WorkExperience,
+                },
+            ],
+            where: {
+                key: profile.id,
+            },
+        });
+
+        if (!existingProfile) {
+            return null;
+        }
+
+        for (const education of existingProfile.education) {
+            await BaseRepository.models.Education.destroy({
+                where: {
+                    id: education.id,
+                }
+            });
+        }
+
+        for (const item of existingProfile.portfolioItems) {
+            await BaseRepository.models.PortfolioItem.destroy({
+                where: {
+                    id: item.id,
+                }
+            });
+        }
+
+        for (const skill of existingProfile.skills) {
+            await BaseRepository.models.Skill.destroy({
+                where: {
+                    id: skill.id,
+                }
+            });
+        }
+
+        for (const workExperience of existingProfile.workExperiences) {
+            await BaseRepository.models.WorkExperience.destroy({
+                where: {
+                    id: workExperience.id,
+                }
+            });
+        }
+
+        existingProfile.about = profile.about;
+        existingProfile.address = profile.address;
+        existingProfile.birthDate = profile.birthDate;
+        existingProfile.contactNumber = profile.contactNumber;
+        existingProfile.emailAddress = profile.emailAddress;
+        existingProfile.firstName = profile.firstName;
+        existingProfile.googlePlusLink = profile.googlePlusLink;
+        existingProfile.image = profile.image;
+        existingProfile.lastName = profile.lastName;
+        existingProfile.linkedInLink = profile.linkedInLink;
+        existingProfile.message = profile.message;
+        existingProfile.twitterLink = profile.twitterLink;
+        existingProfile.type = profile.type;
+        existingProfile.website = profile.website;
+
+        for (const education of profile.education) {
+            await BaseRepository.models.Education.create(education);
+        }
+
+        for (const item of profile.portfolio) {
+            await BaseRepository.models.PortfolioItem.create(item);
+        }
+
+        for (const skill of profile.skills) {
+            await BaseRepository.models.Skill.create(skill);
+        }
+
+        for (const workExperience of profile.workExperiences) {
+            await BaseRepository.models.WorkExperience.create(workExperience);
+        }
+
+        await existingProfile.save();
+
+        return this.find(existingProfile.key);
     }
 }

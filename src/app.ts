@@ -39,8 +39,10 @@ app.use(bodyParser.json({ limit: '50mb' }));
 
 app.get('/api/database/sync', BaseRouter.sync);
 
-app.get('/api/profile', ProfileRouter.get);
-app.post('/api/profile', ProfileRouter.post);
+app.route('/api/profile')
+    .get(ProfileRouter.get)
+    .post(ProfileRouter.post)
+    .put(ProfileRouter.put);
 
 app.use('/api/docs', express.static(path.join(__dirname, './../apidoc')));
 app.use('/api/coverage', express.static(path.join(__dirname, './../coverage/lcov-report')));

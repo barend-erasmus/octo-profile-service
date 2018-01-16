@@ -34,11 +34,39 @@ export class ProfileService {
         profile = await this.profileRepository.create(profile);
 
         return profile;
+
     }
 
     public async find(id: string): Promise<Profile> {
         const profile: Profile = await this.profileRepository.find(id);
 
         return profile;
+        
+    }
+
+    public async update(profile: Profile, username: string): Promise<Profile> {
+
+        profile.username = username;
+
+        const existingProfile: Profile = await this.profileRepository.find(profile.id);
+
+        if (!existingProfile) {
+            throw new Error('id does not exist');
+        }
+
+        const user: User = await this.userRepository.find(profile.username);
+
+        if (!user) {
+            throw new Error('username does not exist');
+        }
+
+        if (existingProfile.username !== user.username) {
+            throw new Error('mismatched username');
+        }
+
+        profile = await this.profileRepository.update(profile);
+
+        return profile;
+
     }
 }
