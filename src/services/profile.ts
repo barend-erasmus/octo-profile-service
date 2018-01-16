@@ -43,6 +43,13 @@ export class ProfileService {
     }
 
     public async list(username: string): Promise<Profile[]> {
+
+        const user: User = await this.userRepository.find(username);
+
+        if (!user) {
+            throw new Error('username does not exist');
+        }
+
         const profiles: Profile[] = await this.profileRepository.list(username);
 
         return profiles;

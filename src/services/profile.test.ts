@@ -84,6 +84,58 @@ describe('ProfileService', () => {
         });
     });
 
+    describe('list', () => {
+
+        let baseRepository: BaseRepository = null;
+        let profileRepository: ProfileRepository = null;
+        let userRepository: UserRepository = null;
+
+        let profileService: ProfileService = null;
+        let userService: UserService = null;
+
+        beforeEach(async () => {
+            baseRepository = new BaseRepository(null, null, null);
+            profileRepository = new ProfileRepository(null, null, null);
+            userRepository = new UserRepository(null, null, null);
+
+            await baseRepository.sync();
+
+            profileService = new ProfileService(profileRepository, userRepository);
+            userService = new UserService(userRepository);
+
+        });
+
+        afterEach(async () => {
+            await baseRepository.sync();
+
+            baseRepository = null;
+            profileRepository = null;
+            userRepository = null;
+
+            profileService = null;
+
+        });
+
+        it('should throw exception given non-existing username', async () => {
+
+            try {
+                await profileService.list('non-existing-username');
+                throw new Error('Expected Error');
+            } catch (err) {
+                expect(err.message).to.be.eq('username does not exist');
+            }
+
+        });
+
+        it('should not throw exception given existing username', async () => {
+
+            await userService.create(new User('existing-username', 'correct-password'));
+
+            await profileService.list('existing-username');
+
+        });
+    });
+
     describe('update', () => {
 
         let baseRepository: BaseRepository = null;
