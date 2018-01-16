@@ -1,5 +1,6 @@
 import * as express from 'express';
 import { Profile } from '../entities/profile';
+import { WorkExperience } from '../entities/work-experience';
 import { config } from './../config';
 import { BaseRouter } from './base';
 
@@ -25,6 +26,12 @@ export class ProfileRouter extends BaseRouter {
 
     public static async post(req: express.Request, res: express.Response) {
         try {
+
+            if (req.body) {
+                req.body.workExperiences.forEach((workExperience) => {
+                    workExperience.to = new Date(workExperience.to);
+                });
+            }
 
             const profile: Profile = await BaseRouter.getProfileService().create(req.body, req['user']);
 

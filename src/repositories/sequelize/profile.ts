@@ -242,19 +242,47 @@ export class ProfileRepository extends BaseRepository implements IProfileReposit
         existingProfile.website = profile.website;
 
         for (const education of profile.education) {
-            await BaseRepository.models.Education.create(education);
+            await BaseRepository.models.Education.create({
+                education: education.description,
+                from: education.from,
+                institutionName: education.institutionName,
+                profileId: existingProfile.id,
+                qualification: education.qualification,
+                to: education.to,
+            });
         }
 
         for (const item of profile.portfolio) {
-            await BaseRepository.models.PortfolioItem.create(item);
+            await BaseRepository.models.PortfolioItem.create({
+                description: item.description,
+                image: item.image,
+                link: item.link,
+                name: item.name,
+                profileId: existingProfile.id,
+            });
         }
 
         for (const skill of profile.skills) {
-            await BaseRepository.models.Skill.create(skill);
+            await BaseRepository.models.Skill.create({
+                description: skill.description,
+                level: skill.level,
+                name: skill.name,
+                profileId: existingProfile.id,
+                years: skill.years,
+            });
         }
 
         for (const workExperience of profile.workExperiences) {
-            await BaseRepository.models.WorkExperience.create(workExperience);
+            await BaseRepository.models.WorkExperience.create({
+                companyName: workExperience.companyName,
+                currentlyEmployed: workExperience.currentlyEmployed,
+                description: workExperience.description,
+                from: workExperience.from,
+                location: workExperience.location,
+                position: workExperience.position,
+                profileId: existingProfile.id,
+                to: workExperience.to,
+            });
         }
 
         await existingProfile.save();
