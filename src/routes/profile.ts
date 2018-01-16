@@ -1,7 +1,6 @@
 import * as express from 'express';
 import { config } from './../config';
 import { BaseRouter } from './base';
-
 import { Profile } from '../entities/profile';
 
 export class ProfileRouter extends BaseRouter {
@@ -9,10 +8,13 @@ export class ProfileRouter extends BaseRouter {
     public static async get(req: express.Request, res: express.Response) {
         try {
 
-            const profile: Profile = await BaseRouter.getProfileService().find(req.query.id);
-
-            res.json(profile);
-
+            if (req.query.id) {
+                const profile: Profile = await BaseRouter.getProfileService().find(req.query.id);
+                res.json(profile);
+            } else {
+                const profiles: Profile[] = await BaseRouter.getProfileService().list(req['user']);
+                res.json(profiles);
+            }
         } catch (err) {
             res.status(500).json({
                 message: err.message,

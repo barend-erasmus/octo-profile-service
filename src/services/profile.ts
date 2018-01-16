@@ -1,8 +1,6 @@
 import { config } from './../config';
-
 import { IProfileRepository } from '../repositories/profile';
 import { IUserRepository } from '../repositories/user';
-
 import { Profile } from '../entities/profile';
 import { User } from '../entities/user';
 
@@ -41,6 +39,13 @@ export class ProfileService {
         const profile: Profile = await this.profileRepository.find(id);
 
         return profile;
+
+    }
+
+    public async list(username: string): Promise<Profile[]> {
+        const profiles: Profile[] = await this.profileRepository.list(username);
+
+        return profiles;
 
     }
 

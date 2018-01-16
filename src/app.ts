@@ -1,15 +1,13 @@
-// Imports
 import * as express from 'express';
 import * as path from 'path';
 import * as yargs from 'yargs';
+import * as jsonwebtoken from 'jsonwebtoken';
 import { config } from './config';
-
-// Imports middleware
 import * as bodyParser from 'body-parser';
-
-// Imports routes
+import * as cors from 'cors';
 import { BaseRouter } from './routes/base';
 import { ProfileRouter } from './routes/profile';
+import { UserRouter } from './routes/user';
 
 const argv = yargs.argv;
 const app = express();
@@ -18,31 +16,39 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json({ limit: '50mb' }));
 
-// function requireUser(req: express.Request, res: express.Response, next: express.NextFunction) {
-//     if (!req.user) {
-//         const options: any = {
+app.use(cors());
 
-//             failureRedirect: '/',
-//             prompt: 'select_account',
-//             scope: ['profile'],
-//             session: true,
-//             state: encodeURIComponent(req.url),
-//             successRedirect: '/ui/survey/list',
-//         };
+function requireUser(req: express.Request, res: express.Response, next: express.NextFunction) {
 
-//         passport.authenticate('google', options)(req, res, next);
-//         return;
-//     }
+    try {
+        const decodedToken: any = jsonwebtoken.verify(req.get('Authorization').split(' ')[1], '=H6gMEL2h-8-UD6j');
 
-//     next();
-// }
+        if (!decodedToken) {
+            res.status(401).end();
+            return;
+        }
+
+        req['user'] = decodedToken.username;
+
+        next();
+
+    } catch (err) {
+        res.status(400).end();
+        return;
+    }
+
+}
 
 app.get('/api/database/sync', BaseRouter.sync);
 
 app.route('/api/profile')
-    .get(ProfileRouter.get)
-    .post(ProfileRouter.post)
-    .put(ProfileRouter.put);
+    .get(requireUser, ProfileRouter.get)
+    .post(requireUser, ProfileRouter.post)
+    .put(requireUser, ProfileRouter.put);
+
+app.route('/api/user')
+    .get(UserRouter.get)
+    .post(UserRouter.post)
 
 app.use('/api/docs', express.static(path.join(__dirname, './../apidoc')));
 app.use('/api/coverage', express.static(path.join(__dirname, './../coverage/lcov-report')));

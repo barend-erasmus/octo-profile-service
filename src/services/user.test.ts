@@ -1,11 +1,8 @@
 import { expect } from 'chai';
 import 'mocha';
-
 import { UserRepository } from '../repositories/sequelize/user';
 import { BaseRepository } from './../repositories/sequelize/base';
-
 import { UserService } from './user';
-
 import { User } from '../entities/user';
 
 describe('UserService', () => {

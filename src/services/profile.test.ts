@@ -1,13 +1,10 @@
 import { expect } from 'chai';
 import 'mocha';
-
 import { UserRepository } from '../repositories/sequelize/user';
 import { BaseRepository } from './../repositories/sequelize/base';
 import { ProfileRepository } from './../repositories/sequelize/profile';
-
 import { ProfileService } from './profile';
 import { UserService } from './user';
-
 import { Profile } from '../entities/profile';
 import { User } from '../entities/user';
 

@@ -1,8 +1,6 @@
 import * as crypto from 'crypto';
 import { config } from './../config';
-
 import { IUserRepository } from '../repositories/user';
-
 import { User } from '../entities/user';
 
 export class UserService {

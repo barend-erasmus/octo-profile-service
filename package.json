@@ -21,6 +21,7 @@
   "homepage": "https://github.com/barend-erasmus/octo-profile-service#readme",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
     "express": "^4.16.2",
     "jsonwebtoken": "^8.1.0",
     "sequelize": "^4.31.2",

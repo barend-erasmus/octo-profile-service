@@ -1,7 +1,5 @@
 import { BaseRepository } from './base';
-
 import { IProfileRepository } from './../profile';
-
 import { Education } from '../../entities/education';
 import { PortfolioItem } from '../../entities/portfolio-item';
 import { Profile } from '../../entities/profile';
@@ -113,6 +111,61 @@ export class ProfileRepository extends BaseRepository implements IProfileReposit
             profile.website,
             profile.workExperiences.map((workExperience) => new WorkExperience(workExperience.companyName, workExperience.currentlyEmployed, workExperience.description, workExperience.from, workExperience.location, workExperience.position, workExperience.to)),
         );
+    }
+
+    public async list(username: string): Promise<Profile[]> {
+
+        const user: any = await BaseRepository.models.User.find({
+            where: {
+                username,
+            },
+        });
+
+        const profiles: any[] = await BaseRepository.models.Profile.findAll({
+            include: [
+                {
+                    model: BaseRepository.models.Education,
+                },
+                {
+                    model: BaseRepository.models.PortfolioItem,
+                },
+                {
+                    model: BaseRepository.models.Skill,
+                },
+                {
+                    model: BaseRepository.models.User,
+                },
+                {
+                    model: BaseRepository.models.WorkExperience,
+                },
+            ],
+            where: {
+                userId: user.id,
+            },
+        });
+
+        return profiles.map((profile) => new Profile(
+            profile.about,
+            profile.address,
+            profile.birthDate,
+            profile.contactNumber,
+            profile.education.map((education) => new Education(education.description, education.from, education.institutionName, education.qualification, education.to)),
+            profile.emailAddress,
+            profile.firstName,
+            profile.googlePlusLink,
+            profile.key,
+            profile.image,
+            profile.lastName,
+            profile.linkedInLink,
+            profile.message,
+            profile.portfolioItems.map((portfolioItem) => new PortfolioItem(portfolioItem.description, portfolioItem.image, portfolioItem.link, portfolioItem.name)),
+            profile.skills.map((skill) => new Skill(skill.description, skill.level, skill.name, skill.years)),
+            profile.twitterLink,
+            profile.type,
+            profile.user.username,
+            profile.website,
+            profile.workExperiences.map((workExperience) => new WorkExperience(workExperience.companyName, workExperience.currentlyEmployed, workExperience.description, workExperience.from, workExperience.location, workExperience.position, workExperience.to)),
+        ));
     }
 
     public async update(profile: Profile): Promise<Profile> {
