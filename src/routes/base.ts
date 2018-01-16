@@ -1,12 +1,11 @@
 import * as express from 'express';
 import { config } from './../config';
 
+import { UserService } from '../services/user';
 import { ProfileService } from './../services/profile';
 
 import { UserRepository } from '../repositories/sequelize/user';
 import { ProfileRepository } from './../repositories/sequelize/profile';
-
-import { Profile } from '../entities/profile';
 
 export class BaseRouter {
 
@@ -35,5 +34,14 @@ export class BaseRouter {
         const profileService: ProfileService = new ProfileService(profileRepository, userRepository);
 
         return profileService;
+    }
+
+    protected static getUserService(): UserService {
+
+        const userRepository: UserRepository = new UserRepository(config.database.host, config.database.username, config.database.password);
+
+        const userService: UserService = new UserService(userRepository);
+
+        return userService;
     }
 }

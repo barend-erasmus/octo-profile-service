@@ -2,10 +2,6 @@ import * as express from 'express';
 import { config } from './../config';
 import { BaseRouter } from './base';
 
-import { ProfileService } from './../services/profile';
-
-import { ProfileRepository } from './../repositories/sequelize/profile';
-
 import { Profile } from '../entities/profile';
 
 export class ProfileRouter extends BaseRouter {
