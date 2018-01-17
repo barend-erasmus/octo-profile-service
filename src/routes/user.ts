@@ -9,21 +9,30 @@ export class UserRouter extends BaseRouter {
     public static async get(req: express.Request, res: express.Response) {
         try {
 
-            const result: boolean = await BaseRouter.getUserService().authenticate(req.query.username, req.query.password);
+            if (req.query.username && req.query.password) {
 
-            if (result) {
-                const token = jsonwebtoken.sign({
-                    exp: Math.floor(Date.now() / 1000) + (60 * 60),
-                    username: req.query.username,
-                }, '=H6gMEL2h-8-UD6j');
+                const result: boolean = await BaseRouter.getUserService().authenticate(req.query.username, req.query.password);
 
-                res.json({
-                    token,
-                });
-            } else {
-                res.status(401).json({
-                    message: 'invalid credentials',
-                });
+                if (result) {
+                    const token = jsonwebtoken.sign({
+                        exp: Math.floor(Date.now() / 1000) + (60 * 60),
+                        username: req.query.username,
+                    }, '=H6gMEL2h-8-UD6j');
+
+                    res.json({
+                        token,
+                    });
+                } else {
+                    res.status(401).json({
+                        message: 'invalid credentials',
+                    });
+                }
+
+            } else if (req['user']) {
+                const result: User = await BaseRouter.getUserService().find(req['user']);
+                res.json(result);
+            }else {
+                res.status(401).end();
             }
 
         } catch (err) {
