@@ -11,6 +11,11 @@ export class ProfileRouter extends BaseRouter {
 
             if (req.query.id) {
                 const profile: Profile = await BaseRouter.getProfileService().find(req.query.id);
+
+                if (!req['user']) {
+                    await BaseRouter.getUsageService().create(req, res, req.query.id);
+                }
+
                 res.json(profile);
             } else {
                 const profiles: Profile[] = await BaseRouter.getProfileService().list(req['user']);

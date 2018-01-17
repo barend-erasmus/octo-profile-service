@@ -4,6 +4,8 @@ import { UserService } from '../services/user';
 import { config } from './../config';
 import { ProfileRepository } from './../repositories/sequelize/profile';
 import { ProfileService } from './../services/profile';
+import { UsageRepository } from '../repositories/sequelize/usage';
+import { UsageService } from '../services/usage';
 
 export class BaseRouter {
 
@@ -32,6 +34,15 @@ export class BaseRouter {
         const profileService: ProfileService = new ProfileService(profileRepository, userRepository);
 
         return profileService;
+    }
+
+    protected static getUsageService(): UsageService {
+
+        const usageRepository: UsageRepository = new UsageRepository(config.database.host, config.database.username, config.database.password);
+
+        const usageService: UsageService = new UsageService(usageRepository);
+
+        return usageService;
     }
 
     protected static getUserService(): UserService {

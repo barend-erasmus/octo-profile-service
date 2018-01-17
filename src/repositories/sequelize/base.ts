@@ -6,6 +6,7 @@ export class BaseRepository {
         PortfolioItem: Sequelize.Model<{}, {}>,
         Profile: Sequelize.Model<{}, {}>,
         Skill: Sequelize.Model<{}, {}>,
+        Usage: Sequelize.Model<{}, {}>,
         User: Sequelize.Model<{}, {}>,
         WorkExperience: Sequelize.Model<{}, {}>,
     } = null;
@@ -138,6 +139,29 @@ export class BaseRepository {
             },
         });
 
+        const Usage = BaseRepository.sequelize.define('usage', {
+            firstTime: {
+                allowNull: false,
+                type: Sequelize.BOOLEAN,
+            },
+            ipAddress: {
+                allowNull: false,
+                type: Sequelize.STRING,
+            },
+            profileId: {
+                allowNull: false,
+                type: Sequelize.STRING,
+            },
+            referer: {
+                allowNull: true,
+                type: Sequelize.STRING,
+            },
+            timestamp: {
+                allowNull: false,
+                type: Sequelize.DATE,
+            },
+        });
+
         const User = BaseRepository.sequelize.define('user', {
             password: {
                 allowNull: true,
@@ -200,6 +224,7 @@ export class BaseRepository {
             PortfolioItem,
             Profile,
             Skill,
+            Usage,
             User,
             WorkExperience,
         };

@@ -28,11 +28,20 @@ export class UserRouter extends BaseRouter {
                     });
                 }
 
-            } else if (req['user']) {
+            } else {
+
+                const decodedToken: any = jsonwebtoken.verify(req.get('Authorization').split(' ')[1], '=H6gMEL2h-8-UD6j');
+
+                if (!decodedToken) {
+                    res.status(401).end();
+                    return;
+                }
+
+                req['user'] = decodedToken.username;
+
                 const result: User = await BaseRouter.getUserService().find(req['user']);
+                
                 res.json(result);
-            }else {
-                res.status(401).end();
             }
 
         } catch (err) {

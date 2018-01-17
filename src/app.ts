@@ -1,4 +1,5 @@
 import * as bodyParser from 'body-parser';
+import * as cookieParser from 'cookie-parser';
 import * as cors from 'cors';
 import * as express from 'express';
 import * as jsonwebtoken from 'jsonwebtoken';
@@ -12,11 +13,10 @@ import { UserRouter } from './routes/user';
 const argv = yargs.argv;
 const app = express();
 
-// Configures body parser
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json({ limit: '50mb' }));
-
 app.use(cors());
+app.use(cookieParser());
 
 function requireUser(req: express.Request, res: express.Response, next: express.NextFunction) {
 
