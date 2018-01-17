@@ -21,8 +21,8 @@ export class UsageRepository extends BaseRepository implements IUsageRepository 
         const result: any[] = await BaseRepository.models.Usage.findAll({
             where: {
                 profileId,
-            }
-        })
+            },
+        });
 
         return result.map((x) => new Usage(
             x.firstTime,

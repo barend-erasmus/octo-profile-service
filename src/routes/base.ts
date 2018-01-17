@@ -1,11 +1,11 @@
 import * as express from 'express';
+import { UsageRepository } from '../repositories/sequelize/usage';
 import { UserRepository } from '../repositories/sequelize/user';
+import { UsageService } from '../services/usage';
 import { UserService } from '../services/user';
 import { config } from './../config';
 import { ProfileRepository } from './../repositories/sequelize/profile';
 import { ProfileService } from './../services/profile';
-import { UsageRepository } from '../repositories/sequelize/usage';
-import { UsageService } from '../services/usage';
 
 export class BaseRouter {
 

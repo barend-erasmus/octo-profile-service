@@ -1,7 +1,7 @@
 import { expect } from 'chai';
+import * as express from 'express';
 import 'mocha';
 import * as sinon from 'sinon';
-import * as express from 'express';
 import { Usage } from '../entities/usage';
 import { UsageRepository } from '../repositories/sequelize/usage';
 import { BaseRepository } from './../repositories/sequelize/base';
@@ -38,18 +38,18 @@ describe('UserService', () => {
 
         it('should create usage', async () => {
 
-            await usageService.create(<express.Request>{
+            await usageService.create({
                 cookies: {
-                    
+
                 },
                 get: (name: string) => {
                     return null;
                 },
-            }, <express.Response>{
+            } as express.Request, {
                 cookie: (name: string, value: string, options: any) => {
 
-                }
-            }, 'profileId');
+                },
+            } as express.Response, 'profileId');
 
             const result: Usage[] = await usageService.list('profileId');
 
@@ -59,18 +59,18 @@ describe('UserService', () => {
 
         it('should create usage with firstTime false given lastVisit cookie', async () => {
 
-            await usageService.create(<express.Request>{
+            await usageService.create({
                 cookies: {
-                    'lastVisit': new Date(),
+                    lastVisit: new Date(),
                 },
                 get: (name: string) => {
                     return null;
                 },
-            }, <express.Response>{
+            } as express.Request, {
                 cookie: (name: string, value: string, options: any) => {
-                    
-                }
-            }, 'profileId');
+
+                },
+            } as express.Response, 'profileId');
 
             const result: Usage[] = await usageService.list('profileId');
 
@@ -80,17 +80,17 @@ describe('UserService', () => {
 
         it('should create usage with firstTime true given no lastVisit cookie', async () => {
 
-            await usageService.create(<express.Request>{
+            await usageService.create({
                 cookies: {
                 },
                 get: (name: string) => {
                     return null;
                 },
-            }, <express.Response>{
+            } as express.Request, {
                 cookie: (name: string, value: string, options: any) => {
-                    
-                }
-            }, 'profileId');
+
+                },
+            } as express.Response, 'profileId');
 
             const result: Usage[] = await usageService.list('profileId');
 
@@ -100,7 +100,7 @@ describe('UserService', () => {
 
         it('should create usage with ip address given X-Real-IP header', async () => {
 
-            await usageService.create(<express.Request>{
+            await usageService.create({
                 cookies: {
                 },
                 get: (name: string) => {
@@ -110,11 +110,11 @@ describe('UserService', () => {
 
                     return null;
                 },
-            }, <express.Response>{
+            } as express.Request, {
                 cookie: (name: string, value: string, options: any) => {
-                    
-                }
-            }, 'profileId');
+
+                },
+            } as express.Response, 'profileId');
 
             const result: Usage[] = await usageService.list('profileId');
 
@@ -124,17 +124,17 @@ describe('UserService', () => {
 
         it('should create usage with ip address given no X-Real-IP header', async () => {
 
-            await usageService.create(<express.Request>{
+            await usageService.create({
                 cookies: {
                 },
                 get: (name: string) => {
                     return null;
                 },
-            }, <express.Response>{
+            } as express.Request, {
                 cookie: (name: string, value: string, options: any) => {
-                    
-                }
-            }, 'profileId');
+
+                },
+            } as express.Response, 'profileId');
 
             const result: Usage[] = await usageService.list('profileId');
 
@@ -144,7 +144,7 @@ describe('UserService', () => {
 
         it('should create usage with referer given referer header', async () => {
 
-            await usageService.create(<express.Request>{
+            await usageService.create({
                 cookies: {
                 },
                 get: (name: string) => {
@@ -154,11 +154,11 @@ describe('UserService', () => {
 
                     return null;
                 },
-            }, <express.Response>{
+            } as express.Request, {
                 cookie: (name: string, value: string, options: any) => {
-                    
-                }
-            }, 'profileId');
+
+                },
+            } as express.Response, 'profileId');
 
             const result: Usage[] = await usageService.list('profileId');
 
@@ -170,7 +170,7 @@ describe('UserService', () => {
 
             const cookieSpy: sinon.SinonSpy = sinon.spy();
 
-            await usageService.create(<express.Request>{
+            await usageService.create({
                 cookies: {
                 },
                 get: (name: string) => {
@@ -180,9 +180,9 @@ describe('UserService', () => {
 
                     return null;
                 },
-            }, <express.Response>{
-                cookie: <any>cookieSpy,
-            }, 'profileId');
+            } as express.Request, {
+                cookie: cookieSpy as any,
+            } as express.Response, 'profileId');
 
             const result: Usage[] = await usageService.list('profileId');
 

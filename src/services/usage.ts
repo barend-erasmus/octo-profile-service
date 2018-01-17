@@ -19,7 +19,7 @@ export class UsageService {
     ): Promise<void> {
 
         await this.usageRepository.create(new Usage(
-            req.cookies['lastVisit']? false : true,
+            req.cookies['lastVisit'] ? false : true,
             req.get('X-Real-IP') || '::1',
             profileId,
             req.get('referer'),

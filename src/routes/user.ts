@@ -40,7 +40,7 @@ export class UserRouter extends BaseRouter {
                 req['user'] = decodedToken.username;
 
                 const result: User = await BaseRouter.getUserService().find(req['user']);
-                
+
                 res.json(result);
             }
 
