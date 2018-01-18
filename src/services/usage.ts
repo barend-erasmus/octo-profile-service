@@ -1,6 +1,7 @@
 import * as crypto from 'crypto';
 import * as express from 'express';
 import { Usage } from '../entities/usage';
+import { UsageCounts } from '../models/usage-counts';
 import { IUsageRepository } from '../repositories/usage';
 import { config } from './../config';
 
@@ -12,10 +13,21 @@ export class UsageService {
 
     }
 
+    public async counts(
+        profileId: string,
+    ): Promise<UsageCounts> {
+
+        const countByReferer: any[] = await this.usageRepository.countByReferer(profileId);
+
+        return new UsageCounts(
+            countByReferer,
+        );
+    }
+
     public async create(
-         req: express.Request,
-         res: express.Response,
-         profileId: string,
+        req: express.Request,
+        res: express.Response,
+        profileId: string,
     ): Promise<void> {
 
         await this.usageRepository.create(new Usage(
@@ -33,8 +45,8 @@ export class UsageService {
 
     public async list(
         profileId: string,
-   ): Promise<Usage[]> {
+    ): Promise<Usage[]> {
 
-       return this.usageRepository.list(profileId);
-   }
+        return this.usageRepository.list(profileId);
+    }
 }

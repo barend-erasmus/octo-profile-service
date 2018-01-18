@@ -3,11 +3,113 @@ import * as express from 'express';
 import 'mocha';
 import * as sinon from 'sinon';
 import { Usage } from '../entities/usage';
+import { UsageCounts } from '../models/usage-counts';
 import { UsageRepository } from '../repositories/sequelize/usage';
 import { BaseRepository } from './../repositories/sequelize/base';
 import { UsageService } from './usage';
 
 describe('UserService', () => {
+
+    describe('counts', () => {
+
+        let baseRepository: BaseRepository = null;
+        let usageRepository: UsageRepository = null;
+
+        let usageService: UsageService = null;
+
+        beforeEach(async () => {
+            baseRepository = new BaseRepository(null, null, null);
+            usageRepository = new UsageRepository(null, null, null);
+
+            await baseRepository.sync();
+
+            usageService = new UsageService(usageRepository);
+
+        });
+
+        afterEach(async () => {
+            await baseRepository.sync();
+
+            baseRepository = null;
+            usageRepository = null;
+
+            usageService = null;
+
+        });
+
+        it('should return usage counts', async () => {
+
+            await usageService.create({
+                cookies: {
+
+                },
+                get: (name: string) => {
+                    return null;
+                },
+            } as express.Request, {
+                cookie: (name: string, value: string, options: any) => {
+
+                },
+            } as express.Response, 'profileId');
+
+            const result: UsageCounts = await usageService.counts('profileId');
+
+            expect(result).to.be.not.null;
+        });
+
+        it('should return usage counts with referer count', async () => {
+
+            await usageService.create({
+                cookies: {
+
+                },
+                get: (name: string) => {
+                    return null;
+                },
+            } as express.Request, {
+                cookie: (name: string, value: string, options: any) => {
+
+                },
+            } as express.Response, 'profileId');
+
+            const result: UsageCounts = await usageService.counts('profileId');
+
+            expect(result.countByReferer).to.be.not.null;
+        });
+
+        it('should return usage counts with the correct referer count', async () => {
+
+            await usageService.create({
+                cookies: {
+
+                },
+                get: (name: string) => {
+                    return null;
+                },
+            } as express.Request, {
+                cookie: (name: string, value: string, options: any) => {
+
+                },
+            } as express.Response, 'profileId');
+
+            await usageService.create({
+                cookies: {
+
+                },
+                get: (name: string) => {
+                    return null;
+                },
+            } as express.Request, {
+                cookie: (name: string, value: string, options: any) => {
+
+                },
+            } as express.Response, 'profileId');
+
+            const result: UsageCounts = await usageService.counts('profileId');
+
+            expect(result.countByReferer[0].count).to.be.eq(2);
+        });
+    });
 
     describe('create', () => {
 
