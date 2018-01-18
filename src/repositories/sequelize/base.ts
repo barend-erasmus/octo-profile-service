@@ -250,7 +250,7 @@ export class BaseRepository {
                 storage: 'octo-profile.sqlite',
             });
 
-            BaseRepository.defineModels();
+             BaseRepository.defineModels();
         }
     }
 

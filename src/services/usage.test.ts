@@ -13,6 +13,7 @@ import { BaseRepository } from './../repositories/sequelize/base';
 import { ProfileService } from './profile';
 import { UsageService } from './usage';
 import { UserService } from './user';
+import { config } from '../config';
 
 describe('UserService', () => {
 
@@ -28,10 +29,10 @@ describe('UserService', () => {
         let userService: UserService = null;
 
         beforeEach(async () => {
-            baseRepository = new BaseRepository(null, null, null);
-            profileRepository = new ProfileRepository(null, null, null);
-            usageRepository = new UsageRepository(null, null, null);
-            userRepository = new UserRepository(null, null, null);
+            baseRepository = new BaseRepository(config.database.host, config.database.username, config.database.password);
+            profileRepository = new ProfileRepository(config.database.host, config.database.username, config.database.password);
+            usageRepository = new UsageRepository(config.database.host, config.database.username, config.database.password);
+            userRepository = new UserRepository(config.database.host, config.database.username, config.database.password);
 
             await baseRepository.sync();
 
@@ -62,16 +63,10 @@ describe('UserService', () => {
             await profileService.create(new Profile(null, null, null, null, [], null, null, null, 'existing-id', null, null, null, null, [], [], null, null, null, null, []), 'existing-username');
 
             await usageService.create({
-                cookies: {
-
-                },
                 get: (name: string) => {
                     return null;
                 },
             } as express.Request, {
-                cookie: (name: string, value: string, options: any) => {
-
-                },
             } as express.Response, 'existing-id');
 
             const result: UsageCounts = await usageService.counts('existing-id');
@@ -93,16 +88,10 @@ describe('UserService', () => {
             await profileService.create(new Profile(null, null, null, null, [], null, null, null, 'existing-id', null, null, null, null, [], [], null, null, null, null, []), 'existing-username');
 
             await usageService.create({
-                cookies: {
-
-                },
                 get: (name: string) => {
                     return null;
                 },
             } as express.Request, {
-                cookie: (name: string, value: string, options: any) => {
-
-                },
             } as express.Response, 'existing-id');
 
             const result: UsageCounts = await usageService.counts('existing-id');
@@ -117,29 +106,17 @@ describe('UserService', () => {
             await profileService.create(new Profile(null, null, null, null, [], null, null, null, 'existing-id', null, null, null, null, [], [], null, null, null, null, []), 'existing-username');
 
             await usageService.create({
-                cookies: {
-
-                },
                 get: (name: string) => {
                     return null;
                 },
             } as express.Request, {
-                cookie: (name: string, value: string, options: any) => {
-
-                },
             } as express.Response, 'existing-id');
 
             await usageService.create({
-                cookies: {
-
-                },
                 get: (name: string) => {
                     return null;
                 },
             } as express.Request, {
-                cookie: (name: string, value: string, options: any) => {
-
-                },
             } as express.Response, 'existing-id');
 
             const result: UsageCounts = await usageService.counts('existing-id');
@@ -154,16 +131,10 @@ describe('UserService', () => {
             await profileService.create(new Profile(null, null, null, null, [], null, null, null, 'existing-id', null, null, null, null, [], [], null, null, null, null, []), 'existing-username');
 
             await usageService.create({
-                cookies: {
-
-                },
                 get: (name: string) => {
                     return null;
                 },
             } as express.Request, {
-                cookie: (name: string, value: string, options: any) => {
-
-                },
             } as express.Response, 'existing-id');
 
             const result: UsageCounts = await usageService.counts('existing-id');
@@ -178,29 +149,23 @@ describe('UserService', () => {
             await profileService.create(new Profile(null, null, null, null, [], null, null, null, 'existing-id', null, null, null, null, [], [], null, null, null, null, []), 'existing-username');
 
             await usageService.create({
-                cookies: {
-
+                query: {
+                    lastVisit: new Date(),
                 },
                 get: (name: string) => {
                     return null;
                 },
             } as express.Request, {
-                cookie: (name: string, value: string, options: any) => {
-
-                },
             } as express.Response, 'existing-id');
 
             await usageService.create({
-                cookies: {
-
+                query: {
+                    lastVisit: new Date(),
                 },
                 get: (name: string) => {
                     return null;
                 },
             } as express.Request, {
-                cookie: (name: string, value: string, options: any) => {
-
-                },
             } as express.Response, 'existing-id');
 
             const result: UsageCounts = await usageService.counts('existing-id');
@@ -218,9 +183,9 @@ describe('UserService', () => {
         let usageService: UsageService = null;
 
         beforeEach(async () => {
-            baseRepository = new BaseRepository(null, null, null);
-            profileRepository = new ProfileRepository(null, null, null);
-            usageRepository = new UsageRepository(null, null, null);
+            baseRepository = new BaseRepository(config.database.host, config.database.username, config.database.password);
+            profileRepository = new ProfileRepository(config.database.host, config.database.username, config.database.password);
+            usageRepository = new UsageRepository(config.database.host, config.database.username, config.database.password);
 
             await baseRepository.sync();
 
@@ -242,16 +207,10 @@ describe('UserService', () => {
         it('should create usage', async () => {
 
             await usageService.create({
-                cookies: {
-
-                },
                 get: (name: string) => {
                     return null;
                 },
             } as express.Request, {
-                cookie: (name: string, value: string, options: any) => {
-
-                },
             } as express.Response, 'existing-id');
 
             const result: Usage[] = await usageService.list('existing-id');
@@ -260,19 +219,17 @@ describe('UserService', () => {
 
         });
 
-        it('should create usage with firstTime false given lastVisit cookie', async () => {
+        it('should create usage with firstTime false given lastVisit', async () => {
 
             await usageService.create({
-                cookies: {
+                query: {
                     lastVisit: new Date(),
                 },
                 get: (name: string) => {
                     return null;
                 },
             } as express.Request, {
-                cookie: (name: string, value: string, options: any) => {
 
-                },
             } as express.Response, 'existing-id');
 
             const result: Usage[] = await usageService.list('existing-id');
@@ -281,18 +238,15 @@ describe('UserService', () => {
 
         });
 
-        it('should create usage with firstTime true given no lastVisit cookie', async () => {
+        it('should create usage with firstTime true given no lastVisit', async () => {
 
             await usageService.create({
-                cookies: {
+                query: {
                 },
                 get: (name: string) => {
                     return null;
                 },
             } as express.Request, {
-                cookie: (name: string, value: string, options: any) => {
-
-                },
             } as express.Response, 'existing-id');
 
             const result: Usage[] = await usageService.list('existing-id');
@@ -304,8 +258,6 @@ describe('UserService', () => {
         it('should create usage with ip address given X-Real-IP header', async () => {
 
             await usageService.create({
-                cookies: {
-                },
                 get: (name: string) => {
                     if (name === 'X-Real-IP') {
                         return '1.1.1.1';
@@ -314,9 +266,7 @@ describe('UserService', () => {
                     return null;
                 },
             } as express.Request, {
-                cookie: (name: string, value: string, options: any) => {
 
-                },
             } as express.Response, 'existing-id');
 
             const result: Usage[] = await usageService.list('existing-id');
@@ -328,15 +278,10 @@ describe('UserService', () => {
         it('should create usage with ip address given no X-Real-IP header', async () => {
 
             await usageService.create({
-                cookies: {
-                },
                 get: (name: string) => {
                     return null;
                 },
             } as express.Request, {
-                cookie: (name: string, value: string, options: any) => {
-
-                },
             } as express.Response, 'existing-id');
 
             const result: Usage[] = await usageService.list('existing-id');
@@ -348,8 +293,6 @@ describe('UserService', () => {
         it('should create usage with referer given referer header', async () => {
 
             await usageService.create({
-                cookies: {
-                },
                 get: (name: string) => {
                     if (name === 'referer') {
                         return 'http://google.com';
@@ -358,9 +301,6 @@ describe('UserService', () => {
                     return null;
                 },
             } as express.Request, {
-                cookie: (name: string, value: string, options: any) => {
-
-                },
             } as express.Response, 'existing-id');
 
             const result: Usage[] = await usageService.list('existing-id');
@@ -368,31 +308,6 @@ describe('UserService', () => {
             expect(result[0].referer).to.be.eq('http://google.com');
 
         });
-
-        it('should call cookie on response', async () => {
-
-            const cookieSpy: sinon.SinonSpy = sinon.spy();
-
-            await usageService.create({
-                cookies: {
-                },
-                get: (name: string) => {
-                    if (name === 'referer') {
-                        return 'http://google.com';
-                    }
-
-                    return null;
-                },
-            } as express.Request, {
-                cookie: cookieSpy as any,
-            } as express.Response, 'existing-id');
-
-            const result: Usage[] = await usageService.list('existing-id');
-
-            expect(cookieSpy.calledOnce).to.be.true;
-
-        });
-
     });
 
 });

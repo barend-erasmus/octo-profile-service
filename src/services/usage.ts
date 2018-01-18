@@ -44,16 +44,12 @@ export class UsageService {
     ): Promise<void> {
 
         await this.usageRepository.create(new Usage(
-            req.cookies['lastVisit'] ? false : true,
+            req.query? (req.query.lastVisit ? false : true) : true,
             req.get('X-Real-IP') || '::1',
             profileId,
             req.get('referer'),
             new Date(),
         ));
-
-        res.cookie('lastVisit', new Date().toString(), {
-            maxAge: 1000 * 60 * 60 * 24 * 7,
-        });
     }
 
     public async list(

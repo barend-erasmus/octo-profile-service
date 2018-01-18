@@ -4,6 +4,7 @@ import { User } from '../entities/user';
 import { UserRepository } from '../repositories/sequelize/user';
 import { BaseRepository } from './../repositories/sequelize/base';
 import { UserService } from './user';
+import { config } from '../config';
 
 describe('UserService', () => {
 
@@ -15,8 +16,8 @@ describe('UserService', () => {
         let userService: UserService = null;
 
         beforeEach(async () => {
-            baseRepository = new BaseRepository(null, null, null);
-            userRepository = new UserRepository(null, null, null);
+            baseRepository = new BaseRepository(config.database.host, config.database.username, config.database.password);
+            userRepository = new UserRepository(config.database.host, config.database.username, config.database.password);
 
             await baseRepository.sync();
 
@@ -72,8 +73,8 @@ describe('UserService', () => {
         let userService: UserService = null;
 
         beforeEach(async () => {
-            baseRepository = new BaseRepository(null, null, null);
-            userRepository = new UserRepository(null, null, null);
+            baseRepository = new BaseRepository(config.database.host, config.database.username, config.database.password);
+            userRepository = new UserRepository(config.database.host, config.database.username, config.database.password);
 
             await baseRepository.sync();
 
@@ -135,8 +136,8 @@ describe('UserService', () => {
         let userService: UserService = null;
 
         beforeEach(async () => {
-            baseRepository = new BaseRepository(null, null, null);
-            userRepository = new UserRepository(null, null, null);
+            baseRepository = new BaseRepository(config.database.host, config.database.username, config.database.password);
+            userRepository = new UserRepository(config.database.host, config.database.username, config.database.password);
 
             await baseRepository.sync();
 

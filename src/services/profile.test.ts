@@ -7,6 +7,7 @@ import { BaseRepository } from './../repositories/sequelize/base';
 import { ProfileRepository } from './../repositories/sequelize/profile';
 import { ProfileService } from './profile';
 import { UserService } from './user';
+import { config } from '../config';
 
 describe('ProfileService', () => {
     describe('create', () => {
@@ -19,9 +20,9 @@ describe('ProfileService', () => {
         let userService: UserService = null;
 
         beforeEach(async () => {
-            baseRepository = new BaseRepository(null, null, null);
-            profileRepository = new ProfileRepository(null, null, null);
-            userRepository = new UserRepository(null, null, null);
+            baseRepository = new BaseRepository(config.database.host, config.database.username, config.database.password);
+            profileRepository = new ProfileRepository(config.database.host, config.database.username, config.database.password);
+            userRepository = new UserRepository(config.database.host, config.database.username, config.database.password);
 
             await baseRepository.sync();
 
@@ -95,9 +96,9 @@ describe('ProfileService', () => {
         let userService: UserService = null;
 
         beforeEach(async () => {
-            baseRepository = new BaseRepository(null, null, null);
-            profileRepository = new ProfileRepository(null, null, null);
-            userRepository = new UserRepository(null, null, null);
+            baseRepository = new BaseRepository(config.database.host, config.database.username, config.database.password);
+            profileRepository = new ProfileRepository(config.database.host, config.database.username, config.database.password);
+            userRepository = new UserRepository(config.database.host, config.database.username, config.database.password);
 
             await baseRepository.sync();
 
@@ -148,9 +149,9 @@ describe('ProfileService', () => {
         let userService: UserService = null;
 
         beforeEach(async () => {
-            baseRepository = new BaseRepository(null, null, null);
-            profileRepository = new ProfileRepository(null, null, null);
-            userRepository = new UserRepository(null, null, null);
+            baseRepository = new BaseRepository(config.database.host, config.database.username, config.database.password);
+            profileRepository = new ProfileRepository(config.database.host, config.database.username, config.database.password);
+            userRepository = new UserRepository(config.database.host, config.database.username, config.database.password);
 
             await baseRepository.sync();
 
