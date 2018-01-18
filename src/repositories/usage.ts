@@ -1,7 +1,8 @@
 import { Usage } from '../entities/usage';
 
 export interface IUsageRepository {
-    countByReferer(profileId: string): Promise<any[]>;
+    countByFirstTime(profileId: string, since: Date): Promise<any[]>;
+    countByReferer(profileId: string, since: Date): Promise<any[]>;
     create(usage: Usage): Promise<Usage>;
     list(profileId: string): Promise<Usage[]>;
 }

@@ -26,7 +26,7 @@ export class BaseRouter {
         }
     }
 
-    protected static getProfileService(): ProfileService {
+    public static getProfileService(): ProfileService {
 
         const profileRepository: ProfileRepository = new ProfileRepository(config.database.host, config.database.username, config.database.password);
         const userRepository: UserRepository = new UserRepository(config.database.host, config.database.username, config.database.password);
@@ -36,16 +36,17 @@ export class BaseRouter {
         return profileService;
     }
 
-    protected static getUsageService(): UsageService {
+    public static getUsageService(): UsageService {
 
+        const profileRepository: ProfileRepository = new ProfileRepository(config.database.host, config.database.username, config.database.password);
         const usageRepository: UsageRepository = new UsageRepository(config.database.host, config.database.username, config.database.password);
 
-        const usageService: UsageService = new UsageService(usageRepository);
+        const usageService: UsageService = new UsageService(usageRepository, profileRepository);
 
         return usageService;
     }
 
-    protected static getUserService(): UserService {
+    public static getUserService(): UserService {
 
         const userRepository: UserRepository = new UserRepository(config.database.host, config.database.username, config.database.password);
 

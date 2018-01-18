@@ -38,6 +38,7 @@ describe('ProfileService', () => {
             userRepository = null;
 
             profileService = null;
+            userService = null;
 
         });
 
@@ -113,6 +114,7 @@ describe('ProfileService', () => {
             userRepository = null;
 
             profileService = null;
+            userService = null;
 
         });
 
@@ -165,6 +167,7 @@ describe('ProfileService', () => {
             userRepository = null;
 
             profileService = null;
+            userService = null;
 
         });
 

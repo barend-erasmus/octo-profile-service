@@ -9,13 +9,37 @@ export class UsageRepository extends BaseRepository implements IUsageRepository 
         super(host, username, password);
     }
 
-    public async countByReferer(profileId: string): Promise<any[]> {
+    public async countByFirstTime(profileId: string, since: Date): Promise<any[]> {
+
+        const result: any[] = await BaseRepository.models.Usage.findAll({
+            attributes: ['firstTime', [ BaseRepository.sequelize.fn('COUNT', '*'), 'usageCount' ]],
+            group: ['firstTime'],
+            where: {
+                profileId,
+                timestamp: {
+                    [Sequelize.Op.gt]: since,
+                },
+            },
+        });
+
+        return result.map((x) => {
+            return {
+                count: x.dataValues.usageCount,
+                firstTime: x.dataValues.firstTime,
+            };
+        });
+    }
+
+    public async countByReferer(profileId: string, since: Date): Promise<any[]> {
 
         const result: any[] = await BaseRepository.models.Usage.findAll({
             attributes: ['referer', [ BaseRepository.sequelize.fn('COUNT', '*'), 'usageCount' ]],
             group: ['referer'],
             where: {
                 profileId,
+                timestamp: {
+                    [Sequelize.Op.gt]: since,
+                },
             },
         });
 

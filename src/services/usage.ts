@@ -1,7 +1,10 @@
 import * as crypto from 'crypto';
 import * as express from 'express';
+import * as moment from 'moment';
+import { Profile } from '../entities/profile';
 import { Usage } from '../entities/usage';
 import { UsageCounts } from '../models/usage-counts';
+import { IProfileRepository } from '../repositories/profile';
 import { IUsageRepository } from '../repositories/usage';
 import { config } from './../config';
 
@@ -9,6 +12,7 @@ export class UsageService {
 
     constructor(
         private usageRepository: IUsageRepository,
+        private profileRepository: IProfileRepository,
     ) {
 
     }
@@ -17,9 +21,18 @@ export class UsageService {
         profileId: string,
     ): Promise<UsageCounts> {
 
-        const countByReferer: any[] = await this.usageRepository.countByReferer(profileId);
+        const profile: Profile = await this.profileRepository.find(profileId);
+
+        if (!profile) {
+            return null;
+        }
+
+        const countByFirstTime: any[] = await this.usageRepository.countByFirstTime(profileId, moment().subtract(7, 'd').toDate());
+
+        const countByReferer: any[] = await this.usageRepository.countByReferer(profileId, moment().subtract(7, 'd').toDate());
 
         return new UsageCounts(
+            countByFirstTime,
             countByReferer,
         );
     }
