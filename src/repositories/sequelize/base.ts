@@ -18,7 +18,7 @@ export class BaseRepository {
         const Education = BaseRepository.sequelize.define('education', {
             description: {
                 allowNull: true,
-                type: Sequelize.STRING,
+                type: Sequelize.TEXT,
             },
             from: {
                 allowNull: true,
@@ -41,7 +41,7 @@ export class BaseRepository {
         const PortfolioItem = BaseRepository.sequelize.define('portfolioItem', {
             description: {
                 allowNull: true,
-                type: Sequelize.STRING,
+                type: Sequelize.TEXT,
             },
             image: {
                 allowNull: true,
@@ -123,7 +123,7 @@ export class BaseRepository {
         const Skill = BaseRepository.sequelize.define('skill', {
             description: {
                 allowNull: true,
-                type: Sequelize.STRING,
+                type: Sequelize.TEXT,
             },
             level: {
                 allowNull: true,
@@ -188,7 +188,7 @@ export class BaseRepository {
             },
             description: {
                 allowNull: true,
-                type: Sequelize.STRING,
+                type: Sequelize.TEXT,
             },
             from: {
                 allowNull: true,

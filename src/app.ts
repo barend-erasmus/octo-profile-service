@@ -77,15 +77,3 @@ app.use('/api/coverage', express.static(path.join(__dirname, './../coverage/lcov
 app.listen(argv.port || 3000, () => {
     console.log(`listening on port ${argv.port || 3000}`);
 });
-
-new BaseRepository(config.database.host, config.database.username, config.database.password).sync(false).then(() => {
-    return BaseRouter.getUserService().find('developersworkspace@gmail.com');
-}).then((userFind: User) => {
-    if (!userFind) {
-        BaseRouter.getUserService().create(new User('developersworkspace@gmail.com', '12345678')).then((userCreate: User) => {
-            return BaseRouter.getProfileService().create(Profile.getProfileBarendErasmus(), userCreate.username);
-        }).then((profile: Profile) => {
-
-        });
-    }
-});

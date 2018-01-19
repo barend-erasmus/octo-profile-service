@@ -1,4 +1,7 @@
 import * as express from 'express';
+import { Profile } from '../entities/profile';
+import { User } from '../entities/user';
+import { BaseRepository } from '../repositories/sequelize/base';
 import { UsageRepository } from '../repositories/sequelize/usage';
 import { UserRepository } from '../repositories/sequelize/user';
 import { UsageService } from '../services/usage';
@@ -12,9 +15,14 @@ export class BaseRouter {
     public static async sync(req: express.Request, res: express.Response) {
         try {
 
-            const profileRepository: ProfileRepository = new ProfileRepository(config.database.host, config.database.username, config.database.password);
+            await new BaseRepository(config.database.host, config.database.username, config.database.password).sync(true);
 
-            await profileRepository.sync();
+            let user: User = await BaseRouter.getUserService().find('developersworkspace@gmail.com');
+
+            if (!user) {
+                user = await BaseRouter.getUserService().create(new User('developersworkspace@gmail.com', '12345678'));
+                await BaseRouter.getProfileService().create(Profile.getProfileBarendErasmus(), user.username);
+            }
 
             res.json(true);
 
