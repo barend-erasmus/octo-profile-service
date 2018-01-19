@@ -33,6 +33,10 @@ export class UserService {
             throw new Error('username already exist');
         }
 
+        if (!this.validEmailAddress(user.username)) {
+            throw new Error('invalid email address');
+        }
+
         user.password = crypto.createHash('md5').update(user.password).digest('hex');
 
         user = await this.userRepository.create(user);
@@ -53,5 +57,10 @@ export class UserService {
 
         return user;
 
+    }
+
+    private validEmailAddress(emailAddress: string): boolean {
+        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(emailAddress.toLowerCase());
     }
 }

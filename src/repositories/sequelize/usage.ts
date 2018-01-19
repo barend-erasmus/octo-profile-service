@@ -12,8 +12,8 @@ export class UsageRepository extends BaseRepository implements IUsageRepository 
     public async countByFirstTime(profileId: string, since: Date): Promise<any[]> {
 
         const result: any[] = await BaseRepository.models.Usage.findAll({
-            attributes: ['firstTime', [ BaseRepository.sequelize.fn('COUNT', '*'), 'usageCount' ]],
-            group: ['firstTime'],
+            attributes: ['firstTime', 'type', [ BaseRepository.sequelize.fn('COUNT', '*'), 'usageCount' ]],
+            group: ['firstTime', 'type'],
             where: {
                 profileId,
                 timestamp: {
@@ -26,6 +26,7 @@ export class UsageRepository extends BaseRepository implements IUsageRepository 
             return {
                 count: x.dataValues.usageCount,
                 firstTime: x.dataValues.firstTime,
+                type: x.dataValues.type,
             };
         });
     }
@@ -33,8 +34,8 @@ export class UsageRepository extends BaseRepository implements IUsageRepository 
     public async countByReferer(profileId: string, since: Date): Promise<any[]> {
 
         const result: any[] = await BaseRepository.models.Usage.findAll({
-            attributes: ['referer', [ BaseRepository.sequelize.fn('COUNT', '*'), 'usageCount' ]],
-            group: ['referer'],
+            attributes: ['referer', 'type', [ BaseRepository.sequelize.fn('COUNT', '*'), 'usageCount' ]],
+            group: ['referer', 'type'],
             where: {
                 profileId,
                 timestamp: {
@@ -47,6 +48,7 @@ export class UsageRepository extends BaseRepository implements IUsageRepository 
             return {
                 count: x.dataValues.usageCount,
                 referer: x.dataValues.referer,
+                type: x.dataValues.type,
             };
         });
     }
@@ -73,6 +75,7 @@ export class UsageRepository extends BaseRepository implements IUsageRepository 
             x.profileId,
             x.referer,
             x.timestamp,
+            x.type,
         ));
     }
 }

@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import * as express from 'express';
 import 'mocha';
 import * as sinon from 'sinon';
+import { config } from '../config';
 import { Profile } from '../entities/profile';
 import { Usage } from '../entities/usage';
 import { User } from '../entities/user';
@@ -13,9 +14,8 @@ import { BaseRepository } from './../repositories/sequelize/base';
 import { ProfileService } from './profile';
 import { UsageService } from './usage';
 import { UserService } from './user';
-import { config } from '../config';
 
-describe('UserService', () => {
+describe('UsageService', () => {
 
     describe('counts', () => {
 
@@ -29,10 +29,10 @@ describe('UserService', () => {
         let userService: UserService = null;
 
         beforeEach(async () => {
-            baseRepository = new BaseRepository(config.database.host, config.database.username, config.database.password);
-            profileRepository = new ProfileRepository(config.database.host, config.database.username, config.database.password);
-            usageRepository = new UsageRepository(config.database.host, config.database.username, config.database.password);
-            userRepository = new UserRepository(config.database.host, config.database.username, config.database.password);
+            baseRepository = new BaseRepository(null, null, null);
+            profileRepository = new ProfileRepository(null, null, null);
+            usageRepository = new UsageRepository(null, null, null);
+            userRepository = new UserRepository(null, null, null);
 
             await baseRepository.sync();
 
@@ -58,9 +58,9 @@ describe('UserService', () => {
 
         it('should return usage counts', async () => {
 
-            await userService.create(new User('existing-username', 'correct-password'));
+            await userService.create(new User('existing-email-address@example.com', 'correct-password'));
 
-            await profileService.create(new Profile(null, null, null, null, [], null, null, null, 'existing-id', null, null, null, null, [], [], null, null, null, null, []), 'existing-username');
+            await profileService.create(new Profile(null, null, null, null, [], null, null, null, 'existing-id', null, null, null, null, [], [], null, null, null, null, []), 'existing-email-address@example.com');
 
             await usageService.create({
                 get: (name: string) => {
@@ -83,9 +83,9 @@ describe('UserService', () => {
 
         it('should return usage counts with referer count', async () => {
 
-            await userService.create(new User('existing-username', 'correct-password'));
+            await userService.create(new User('existing-email-address@example.com', 'correct-password'));
 
-            await profileService.create(new Profile(null, null, null, null, [], null, null, null, 'existing-id', null, null, null, null, [], [], null, null, null, null, []), 'existing-username');
+            await profileService.create(new Profile(null, null, null, null, [], null, null, null, 'existing-id', null, null, null, null, [], [], null, null, null, null, []), 'existing-email-address@example.com');
 
             await usageService.create({
                 get: (name: string) => {
@@ -101,9 +101,9 @@ describe('UserService', () => {
 
         it('should return usage counts with the correct referer count', async () => {
 
-            await userService.create(new User('existing-username', 'correct-password'));
+            await userService.create(new User('existing-email-address@example.com', 'correct-password'));
 
-            await profileService.create(new Profile(null, null, null, null, [], null, null, null, 'existing-id', null, null, null, null, [], [], null, null, null, null, []), 'existing-username');
+            await profileService.create(new Profile(null, null, null, null, [], null, null, null, 'existing-id', null, null, null, null, [], [], null, null, null, null, []), 'existing-email-address@example.com');
 
             await usageService.create({
                 get: (name: string) => {
@@ -126,9 +126,9 @@ describe('UserService', () => {
 
         it('should return usage counts with first time count', async () => {
 
-            await userService.create(new User('existing-username', 'correct-password'));
+            await userService.create(new User('existing-email-address@example.com', 'correct-password'));
 
-            await profileService.create(new Profile(null, null, null, null, [], null, null, null, 'existing-id', null, null, null, null, [], [], null, null, null, null, []), 'existing-username');
+            await profileService.create(new Profile(null, null, null, null, [], null, null, null, 'existing-id', null, null, null, null, [], [], null, null, null, null, []), 'existing-email-address@example.com');
 
             await usageService.create({
                 get: (name: string) => {
@@ -144,24 +144,21 @@ describe('UserService', () => {
 
         it('should return usage counts with the correct first time count', async () => {
 
-            await userService.create(new User('existing-username', 'correct-password'));
+            await userService.create(new User('existing-email-address@example.com', 'correct-password'));
 
-            await profileService.create(new Profile(null, null, null, null, [], null, null, null, 'existing-id', null, null, null, null, [], [], null, null, null, null, []), 'existing-username');
+            await profileService.create(new Profile(null, null, null, null, [], null, null, null, 'existing-id', null, null, null, null, [], [], null, null, null, null, []), 'existing-email-address@example.com');
 
             await usageService.create({
-                query: {
-                    lastVisit: new Date(),
-                },
                 get: (name: string) => {
                     return null;
+                },
+                query: {
+                    lastVisit: new Date(),
                 },
             } as express.Request, {
             } as express.Response, 'existing-id');
 
             await usageService.create({
-                query: {
-                    lastVisit: new Date(),
-                },
                 get: (name: string) => {
                     return null;
                 },
@@ -170,7 +167,8 @@ describe('UserService', () => {
 
             const result: UsageCounts = await usageService.counts('existing-id');
 
-            expect(result.countByFirstTime.filter((x) => x.firstTime)[0].count).to.be.eq(2);
+            expect(result.countByFirstTime.filter((x) => x.firstTime)[0].count).to.be.eq(1);
+            expect(result.countByFirstTime.filter((x) => !x.firstTime)[0].count).to.be.eq(1);
         });
     });
 
@@ -183,9 +181,9 @@ describe('UserService', () => {
         let usageService: UsageService = null;
 
         beforeEach(async () => {
-            baseRepository = new BaseRepository(config.database.host, config.database.username, config.database.password);
-            profileRepository = new ProfileRepository(config.database.host, config.database.username, config.database.password);
-            usageRepository = new UsageRepository(config.database.host, config.database.username, config.database.password);
+            baseRepository = new BaseRepository(null, null, null);
+            profileRepository = new ProfileRepository(null, null, null);
+            usageRepository = new UsageRepository(null, null, null);
 
             await baseRepository.sync();
 
@@ -219,14 +217,58 @@ describe('UserService', () => {
 
         });
 
-        it('should create usage with firstTime false given lastVisit', async () => {
+        it('should create usage with type as bot given bot user agent', async () => {
 
             await usageService.create({
+                get: (name: string) => {
+                    if (name === 'User-Agent') {
+                        return 'Googlebot/2.1 (+http://www.google.com/bot.html)';
+                    }
+                    return null;
+                },
                 query: {
                     lastVisit: new Date(),
                 },
+            } as express.Request, {
+
+            } as express.Response, 'existing-id');
+
+            const result: Usage[] = await usageService.list('existing-id');
+
+            expect(result[0].type).to.be.eq('bot');
+
+        });
+
+        it('should create usage with type as browser given browser user agent', async () => {
+
+            await usageService.create({
+                get: (name: string) => {
+                    if (name === 'User-Agent') {
+                        return 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36';
+                    }
+                    return null;
+                },
+                query: {
+                    lastVisit: new Date(),
+                },
+            } as express.Request, {
+
+            } as express.Response, 'existing-id');
+
+            const result: Usage[] = await usageService.list('existing-id');
+
+            expect(result[0].type).to.be.eq('browser');
+
+        });
+
+        it('should create usage with firstTime false given lastVisit', async () => {
+
+            await usageService.create({
                 get: (name: string) => {
                     return null;
+                },
+                query: {
+                    lastVisit: new Date(),
                 },
             } as express.Request, {
 
@@ -241,10 +283,10 @@ describe('UserService', () => {
         it('should create usage with firstTime true given no lastVisit', async () => {
 
             await usageService.create({
-                query: {
-                },
                 get: (name: string) => {
                     return null;
+                },
+                query: {
                 },
             } as express.Request, {
             } as express.Response, 'existing-id');

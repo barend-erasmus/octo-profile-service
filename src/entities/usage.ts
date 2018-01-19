@@ -5,6 +5,7 @@ export class Usage {
         public profileId: string,
         public referer: string,
         public timestamp: Date,
+        public type: string,
     ) {
 
     }

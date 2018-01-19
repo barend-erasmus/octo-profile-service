@@ -14,27 +14,18 @@
         "mkdir /logs",
         "npm --prefix /opt/octo-profile-service install",
         "pm2 stop octo-profile-service",
-        "pm2 start /opt/octo-profile-service/src/app.js --name octo-profile-service -- --prod --port 9015",
-        "sudo service nginx reload"
+        "pm2 start /opt/octo-profile-service/src/app.js --name octo-profile-service -- --prod --port 9003"
     ],
     "directories": [
         {
             "source": "$workspace/src",
             "destination": "/opt/octo-profile-service/src"
-        },
-        {
-            "source": "$workspace/coverage",
-            "destination": "/opt/octo-profile-service/coverage"
         }
     ],
     "files": [
         {
             "source": "$workspace/package.json",
             "destination": "/opt/octo-profile-service/package.json"
-        },
-        {
-            "source": "$workspace/nginx.conf",
-            "destination": "/etc/nginx/sites-enabled/octo-profile-service"
         }
     ]
 }

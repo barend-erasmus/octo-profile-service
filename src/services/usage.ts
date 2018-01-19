@@ -1,5 +1,6 @@
 import * as crypto from 'crypto';
 import * as express from 'express';
+import * as isBot from 'isbot';
 import * as moment from 'moment';
 import { Profile } from '../entities/profile';
 import { Usage } from '../entities/usage';
@@ -44,11 +45,12 @@ export class UsageService {
     ): Promise<void> {
 
         await this.usageRepository.create(new Usage(
-            req.query? (req.query.lastVisit ? false : true) : true,
+            req.query ? (req.query.lastVisit ? false : true) : true,
             req.get('X-Real-IP') || '::1',
             profileId,
             req.get('referer'),
             new Date(),
+            isBot(req.get('User-Agent')) ? 'bot' : 'browser',
         ));
     }
 

@@ -160,6 +160,10 @@ export class BaseRepository {
                 allowNull: false,
                 type: Sequelize.DATE,
             },
+            type: {
+                allowNull: false,
+                type: Sequelize.STRING,
+            },
         });
 
         const User = BaseRepository.sequelize.define('user', {
@@ -233,24 +237,27 @@ export class BaseRepository {
     constructor(private host: string, private username: string, private password: string) {
 
         if (!BaseRepository.sequelize) {
-            // BaseRepository.sequelize = new Sequelize('octo-profile-service', username, password, {
-            //     dialect: 'postgres',
-            //     host,
-            //     logging: false,
-            //     pool: {
-            //         idle: 10000,
-            //         max: 5,
-            //         min: 0,
-            //     },
-            // });
 
-            BaseRepository.sequelize = new Sequelize(null, null, null, {
-                dialect: 'sqlite',
-                logging: false,
-                storage: 'octo-profile.sqlite',
-            });
+            if (!host && !username && !password) {
 
-             BaseRepository.defineModels();
+                BaseRepository.sequelize = new Sequelize(null, null, null, {
+                    dialect: 'sqlite',
+                    logging: false,
+                });
+            } else {
+                BaseRepository.sequelize = new Sequelize('octo-profile-service', username, password, {
+                    dialect: 'postgres',
+                    host,
+                    logging: false,
+                    pool: {
+                        idle: 10000,
+                        max: 5,
+                        min: 0,
+                    },
+                });
+            }
+
+            BaseRepository.defineModels();
         }
     }
 
@@ -258,9 +265,9 @@ export class BaseRepository {
         BaseRepository.sequelize.close();
     }
 
-    public sync(): Promise<void> {
+    public sync(force: boolean = true): Promise<void> {
         return new Promise((resolve, reject) => {
-            BaseRepository.sequelize.sync({ force: true }).then(() => {
+            BaseRepository.sequelize.sync({ force }).then(() => {
                 resolve();
             });
         });

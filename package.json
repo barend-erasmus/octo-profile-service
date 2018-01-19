@@ -7,7 +7,8 @@
     "test": "tsc & mocha --timeout 5000 ./src/**/*.test.js",
     "coverage": "tsc & istanbul cover node_modules/mocha/bin/_mocha --root ./src ./src/**/*.test.js",
     "start": "tsc & node ./src/app.js",
-    "lint": "tslint ./src/**/*.ts --exclude ./src/**/*.d.ts"
+    "lint": "tslint ./src/**/*.ts --exclude ./src/**/*.d.ts",
+    "deploy": "tsc & ssh-deployer -f deploy.json --host octoprofile.com --username username --password password --workspace ./"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,7 @@
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
     "express": "^4.16.2",
+    "isbot": "^2.1.2",
     "jsonwebtoken": "^8.1.0",
     "moment": "^2.20.1",
     "pg": "^7.4.1",

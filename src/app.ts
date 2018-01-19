@@ -8,6 +8,7 @@ import * as yargs from 'yargs';
 import { config } from './config';
 import { Profile } from './entities/profile';
 import { User } from './entities/user';
+import { BaseRepository } from './repositories/sequelize/base';
 import { BaseRouter } from './routes/base';
 import { ProfileRouter } from './routes/profile';
 import { UsageRouter } from './routes/usage';
@@ -77,13 +78,14 @@ app.listen(argv.port || 3000, () => {
     console.log(`listening on port ${argv.port || 3000}`);
 });
 
-BaseRouter.getUserService().find('developersworkspace@gmail.com').then((user: User) => {
-    if (!user) {
-        BaseRouter.getUserService().create(new User('developersworkspace@gmail.com', '12345678')).then((user: User) => {
-            return BaseRouter.getProfileService().create(Profile.getProfileBarendErasmus(), user.username);
+new BaseRepository(config.database.host, config.database.username, config.database.password).sync(false).then(() => {
+    return BaseRouter.getUserService().find('developersworkspace@gmail.com');
+}).then((userFind: User) => {
+    if (!userFind) {
+        BaseRouter.getUserService().create(new User('developersworkspace@gmail.com', '12345678')).then((userCreate: User) => {
+            return BaseRouter.getProfileService().create(Profile.getProfileBarendErasmus(), userCreate.username);
         }).then((profile: Profile) => {
 
         });
     }
 });
-
