@@ -8,6 +8,7 @@ import { BaseRepository } from './../repositories/sequelize/base';
 import { ProfileRepository } from './../repositories/sequelize/profile';
 import { ProfileService } from './profile';
 import { UserService } from './user';
+import { WorkExperience } from '../entities/work-experience';
 
 describe('ProfileService', () => {
     describe('create', () => {
@@ -83,6 +84,77 @@ describe('ProfileService', () => {
 
             await profileService.create(new Profile(null, null, null, null, [], null, null, null, 'non-existing-id', null, null, null, null, [], [], null, null, null, null, []), 'existing-email-address@example.com');
 
+        });
+    });
+
+    describe('find', () => {
+
+        let baseRepository: BaseRepository = null;
+        let profileRepository: ProfileRepository = null;
+        let userRepository: UserRepository = null;
+
+        let profileService: ProfileService = null;
+        let userService: UserService = null;
+
+        beforeEach(async () => {
+            baseRepository = new BaseRepository(null, null, null);
+            profileRepository = new ProfileRepository(null, null, null);
+            userRepository = new UserRepository(null, null, null);
+
+            await baseRepository.sync();
+
+            profileService = new ProfileService(profileRepository, userRepository);
+            userService = new UserService(userRepository);
+
+        });
+
+        afterEach(async () => {
+            await baseRepository.sync();
+
+            baseRepository = null;
+            profileRepository = null;
+            userRepository = null;
+
+            profileService = null;
+            userService = null;
+
+        });
+
+        it('should return null given non-existing id', async () => {
+
+            const profile: Profile = await profileService.find('non-existing-id');
+
+            expect(profile).to.be.null;
+
+        });
+
+        it('should return profile given existing id', async () => {
+
+            await userService.create(new User('existing-email-address@example.com', 'correct-password'));
+
+            await profileRepository.create(new Profile(null, null, null, null, [], null, null, null, 'existing-id', null, null, null, null, [], [], null, null, 'existing-email-address@example.com', null, []));
+
+            const profile: Profile = await profileService.find('existing-id');
+
+            expect(profile).to.be.not.null;
+
+        });
+
+        it('should return profile with sorted work experiences given existing id', async () => {
+
+            await userService.create(new User('existing-email-address@example.com', 'correct-password'));
+
+            await profileRepository.create(new Profile(null, null, null, null, [], null, null, null, 'existing-id', null, null, null, null, [], [], null, null, 'existing-email-address@example.com', null, [
+                new WorkExperience('D', false, null, new Date(2014, 11, 1), null, null, new Date(2016, 1, 1)),
+                new WorkExperience('C', true, null, new Date(2016, 2, 1), null, null, null),
+                new WorkExperience('A', true, null, new Date(2017, 4, 1), null, null, null),
+                new WorkExperience('B', false, null, new Date(2016, 3, 1), null, null, new Date(2017, 0, 1)),
+            ]));
+
+            const profile: Profile = await profileService.find('existing-id');
+
+            expect(profile.workExperiences[0].from.getTime()).to.be.eq(new Date(2017, 4, 1).getTime());
+            expect(profile.workExperiences[3].from.getTime()).to.be.eq(new Date(2014, 11, 1).getTime());
         });
     });
 

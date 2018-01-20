@@ -3,6 +3,7 @@ import { User } from '../entities/user';
 import { IProfileRepository } from '../repositories/profile';
 import { IUserRepository } from '../repositories/user';
 import { config } from './../config';
+import { WorkExperience } from '../entities/work-experience';
 
 export class ProfileService {
 
@@ -36,7 +37,24 @@ export class ProfileService {
     }
 
     public async find(id: string): Promise<Profile> {
+
         const profile: Profile = await this.profileRepository.find(id);
+
+        if (!profile) {
+            return null;
+        }
+
+        profile.workExperiences = profile.workExperiences.sort((a: WorkExperience, b: WorkExperience) => {
+            if (b.from === a.from) {
+                return 0;
+            }
+
+            if (b.from < a.from) {
+                return -1;
+            }
+
+            return 1;
+        });
 
         return profile;
 
