@@ -12,7 +12,7 @@ export class UserRepository extends BaseRepository implements IUserRepository {
 
         const result: any = await BaseRepository.models.User.create({
             password: user.password,
-            username: user.username,
+            userName: user.userName,
         }, {
         });
 

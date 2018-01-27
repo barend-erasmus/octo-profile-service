@@ -1,11 +1,15 @@
-import * as crypto from 'crypto';
 import { User } from '../entities/user';
 import { IUserRepository } from '../repositories/user';
-import { config } from './../config';
+import { IUserExceptionHelper } from '../interfaces/user-exception-helper';
+import { IHashStrategy } from '../interfaces/hash-strategy';
+import { IStringValidationStrategy } from '../interfaces/string-validation-strategy';
 
 export class UserService {
 
     constructor(
+        private hashStrategy: IHashStrategy,
+        private emailAddressValidationStrategy: IStringValidationStrategy,
+        private userExceptionHelper: IUserExceptionHelper,
         private userRepository: IUserRepository,
     ) {
 
@@ -13,7 +17,7 @@ export class UserService {
 
     public async authenticate(username: string, password: string): Promise<boolean> {
 
-        password = crypto.createHash('md5').update(password).digest('hex');
+        const hashedPassword: string = this.hashStrategy.hash(password);
 
         const user: User = await this.userRepository.find(username);
 
@@ -21,27 +25,23 @@ export class UserService {
             return false;
         }
 
-        return user.password === password;
+        return user.password === hashedPassword;
 
     }
 
     public async create(user: User): Promise<User> {
 
-        const existingUser: User = await this.userRepository.find(user.username);
+        await this.userExceptionHelper.throwIfUserExist(user.userName);
 
-        if (existingUser) {
-            throw new Error('username already exist');
+        if (!this.emailAddressValidationStrategy.validate(user.userName)) {
+            throw new Error('Invallid Email Address');
         }
 
-        if (!this.validEmailAddress(user.username)) {
-            throw new Error('invalid email address');
-        }
-
-        user.password = crypto.createHash('md5').update(user.password).digest('hex');
+        const hashedPassword: string = this.hashStrategy.hash(user.password);
 
         user = await this.userRepository.create(user);
 
-        user.password = null;
+        user.clearPassword();
 
         return user;
 
@@ -52,15 +52,10 @@ export class UserService {
         const user: User = await this.userRepository.find(username);
 
         if (user) {
-            user.password = null;
+            user.clearPassword();
         }
 
         return user;
 
-    }
-
-    private validEmailAddress(emailAddress: string): boolean {
-        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(emailAddress.toLowerCase());
     }
 }

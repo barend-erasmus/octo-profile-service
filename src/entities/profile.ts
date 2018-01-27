@@ -22,11 +22,19 @@ export class Profile {
         public skills: Skill[],
         public twitterLink: string,
         public type: string,
-        public username: string,
+        public userName: string,
         public website: string,
         public workExperiences: WorkExperience[],
     ) {
 
+    }
+
+    public setUserName(userName: string): void {
+        this.userName = userName;
+    }
+
+    public static empty(): Profile {
+        return new Profile(null, null, null, null, [], null, null, null, null, null, null, null, null, [], [], null, null, null, null, []);
     }
 
     public static getProfileBarendErasmus(): Profile {

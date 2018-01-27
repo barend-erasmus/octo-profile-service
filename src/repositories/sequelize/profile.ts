@@ -16,7 +16,7 @@ export class ProfileRepository extends BaseRepository implements IProfileReposit
 
         const user: any = await BaseRepository.models.User.find({
             where: {
-                username: profile.username,
+                userName: profile.userName,
             },
         });
 
@@ -113,11 +113,11 @@ export class ProfileRepository extends BaseRepository implements IProfileReposit
         );
     }
 
-    public async list(username: string): Promise<Profile[]> {
+    public async list(userName: string): Promise<Profile[]> {
 
         const user: any = await BaseRepository.models.User.find({
             where: {
-                username,
+                userName,
             },
         });
 

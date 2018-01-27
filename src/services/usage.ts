@@ -7,7 +7,6 @@ import { Usage } from '../entities/usage';
 import { UsageCounts } from '../models/usage-counts';
 import { IProfileRepository } from '../repositories/profile';
 import { IUsageRepository } from '../repositories/usage';
-import { config } from './../config';
 
 export class UsageService {
 

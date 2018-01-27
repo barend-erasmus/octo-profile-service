@@ -2,33 +2,40 @@ import { Profile } from '../entities/profile';
 import { User } from '../entities/user';
 import { IProfileRepository } from '../repositories/profile';
 import { IUserRepository } from '../repositories/user';
-import { config } from './../config';
 import { WorkExperience } from '../entities/work-experience';
+import { IProfileExceptionHelper } from '../interfaces/profile-exception-helper';
+import { IUserExceptionHelper } from '../interfaces/user-exception-helper';
 
 export class ProfileService {
 
     constructor(
+        private profileExceptionHelper: IProfileExceptionHelper,
         private profileRepository: IProfileRepository,
+        private userExceptionHelper: IUserExceptionHelper,
         private userRepository: IUserRepository,
     ) {
 
     }
 
-    public async create(profile: Profile, username: string): Promise<Profile> {
-
-        profile.username = username;
-
-        const existingProfile: Profile = await this.profileRepository.find(profile.id);
-
-        if (existingProfile) {
-            throw new Error('id already exist');
+    public compareWorkExperiences(a: WorkExperience, b: WorkExperience): number {
+        if (b.from === a.from) {
+            return 0;
         }
 
-        const user: User = await this.userRepository.find(profile.username);
-
-        if (!user) {
-            throw new Error('username does not exist');
+        if (b.from < a.from) {
+            return -1;
         }
+
+        return 1;
+    }
+
+    public async create(profile: Profile, userName: string): Promise<Profile> {
+
+        profile.setUserName(userName);
+
+        await this.profileExceptionHelper.throwIfProfileExist(profile.id);
+
+        await this.userExceptionHelper.throwIfUserNotExist(userName);
 
         profile = await this.profileRepository.create(profile);
 
@@ -44,55 +51,31 @@ export class ProfileService {
             return null;
         }
 
-        profile.workExperiences = profile.workExperiences.sort((a: WorkExperience, b: WorkExperience) => {
-            if (b.from === a.from) {
-                return 0;
-            }
-
-            if (b.from < a.from) {
-                return -1;
-            }
-
-            return 1;
-        });
+        profile.workExperiences = profile.workExperiences.sort(this.compareWorkExperiences);
 
         return profile;
 
     }
 
-    public async list(username: string): Promise<Profile[]> {
+    public async list(userName: string): Promise<Profile[]> {
 
-        const user: User = await this.userRepository.find(username);
+        const user: User = await this.userExceptionHelper.throwIfUserNotExist(userName);
 
-        if (!user) {
-            throw new Error('username does not exist');
-        }
-
-        const profiles: Profile[] = await this.profileRepository.list(username);
+        const profiles: Profile[] = await this.profileRepository.list(userName);
 
         return profiles;
 
     }
 
-    public async update(profile: Profile, username: string): Promise<Profile> {
+    public async update(profile: Profile, userName: string): Promise<Profile> {
 
-        profile.username = username;
+        profile.setUserName(userName);
 
-        const existingProfile: Profile = await this.profileRepository.find(profile.id);
+        const existingProfile = await this.profileExceptionHelper.throwIfProfileNotExist(profile.id);
 
-        if (!existingProfile) {
-            throw new Error('id does not exist');
-        }
+        const user: User = await this.userExceptionHelper.throwIfUserNotExist(userName);
 
-        const user: User = await this.userRepository.find(profile.username);
-
-        if (!user) {
-            throw new Error('username does not exist');
-        }
-
-        if (existingProfile.username !== user.username) {
-            throw new Error('mismatched username');
-        }
+        this.userExceptionHelper.throwIfUserNameMismatch(user, profile);
 
         profile = await this.profileRepository.update(profile);
 
