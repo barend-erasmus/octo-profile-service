@@ -27,7 +27,7 @@ function customMiddleware(req: express.Request, res: express.Response, next: exp
     try {
         const decodedToken: any = jsonwebtoken.verify(req.get('Authorization').split(' ')[1], '=H6gMEL2h-8-UD6j');
 
-        req['user'] = decodedToken.username;
+        req['user'] = decodedToken.userName;
 
     } catch (err) {
 
@@ -46,7 +46,7 @@ function requireUser(req: express.Request, res: express.Response, next: express.
             return;
         }
 
-        req['user'] = decodedToken.username;
+        req['user'] = decodedToken.userName;
 
         next();
 

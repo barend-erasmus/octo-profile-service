@@ -8,8 +8,8 @@ import { BaseRepository } from './base';
 
 export class ProfileRepository extends BaseRepository implements IProfileRepository {
 
-    constructor(host: string, username: string, password: string) {
-        super(host, username, password);
+    constructor(host: string, userName: string, password: string) {
+        super(host, userName, password);
     }
 
     public async create(profile: Profile): Promise<Profile> {
@@ -107,7 +107,7 @@ export class ProfileRepository extends BaseRepository implements IProfileReposit
             profile.skills.map((skill) => new Skill(skill.description, skill.level, skill.name, skill.years)),
             profile.twitterLink,
             profile.type,
-            profile.user.username,
+            profile.user.userName,
             profile.website,
             profile.workExperiences.map((workExperience) => new WorkExperience(workExperience.companyName, workExperience.currentlyEmployed, workExperience.description, workExperience.from, workExperience.location, workExperience.position, workExperience.to)),
         );
@@ -162,7 +162,7 @@ export class ProfileRepository extends BaseRepository implements IProfileReposit
             profile.skills.map((skill) => new Skill(skill.description, skill.level, skill.name, skill.years)),
             profile.twitterLink,
             profile.type,
-            profile.user.username,
+            profile.user.userName,
             profile.website,
             profile.workExperiences.map((workExperience) => new WorkExperience(workExperience.companyName, workExperience.currentlyEmployed, workExperience.description, workExperience.from, workExperience.location, workExperience.position, workExperience.to)),
         ));

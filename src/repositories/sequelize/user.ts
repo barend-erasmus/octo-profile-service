@@ -4,8 +4,8 @@ import { BaseRepository } from './base';
 
 export class UserRepository extends BaseRepository implements IUserRepository {
 
-    constructor(host: string, username: string, password: string) {
-        super(host, username, password);
+    constructor(host: string, userName: string, password: string) {
+        super(host, userName, password);
     }
 
     public async create(user: User): Promise<User> {
@@ -19,10 +19,10 @@ export class UserRepository extends BaseRepository implements IUserRepository {
         return user;
     }
 
-    public async find(username: string): Promise<User> {
+    public async find(userName: string): Promise<User> {
         const user: any = await BaseRepository.models.User.find({
             where: {
-                username,
+                userName,
             },
         });
 
@@ -31,7 +31,7 @@ export class UserRepository extends BaseRepository implements IUserRepository {
         }
 
         return new User(
-            user.username,
+            user.userName,
             user.password,
         );
     }

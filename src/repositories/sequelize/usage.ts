@@ -5,8 +5,8 @@ import { BaseRepository } from './base';
 
 export class UsageRepository extends BaseRepository implements IUsageRepository {
 
-    constructor(host: string, username: string, password: string) {
-        super(host, username, password);
+    constructor(host: string, userName: string, password: string) {
+        super(host, userName, password);
     }
 
     public async countByFirstTime(profileId: string, since: Date): Promise<any[]> {

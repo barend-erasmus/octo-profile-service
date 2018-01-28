@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "tsc & mocha --timeout 5000 ./src/**/*.test.js",
-    "coverage": "tsc & istanbul cover node_modules/mocha/bin/_mocha --root ./src ./src/**/*.test.js",
-    "start": "tsc & node ./src/app.js",
+    "test": "tsc & mocha --timeout 5000 ./dist/**/*.test.js",
+    "coverage": "tsc & istanbul cover node_modules/mocha/bin/_mocha --root ./src ./dist/**/*.test.js",
+    "start": "tsc & node ./dist/app.js",
     "lint": "tslint ./src/**/*.ts --exclude ./src/**/*.d.ts",
     "deploy": "tsc & ssh-deployer -f deploy.json --host octoprofile.com --username username --password password --workspace ./"
   },

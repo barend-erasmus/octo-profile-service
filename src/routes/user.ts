@@ -9,14 +9,14 @@ export class UserRouter extends BaseRouter {
     public static async get(req: express.Request, res: express.Response) {
         try {
 
-            if (req.query.username && req.query.password) {
+            if (req.query.userName && req.query.password) {
 
-                const result: boolean = await BaseRouter.getUserService().authenticate(req.query.username, req.query.password);
+                const result: boolean = await BaseRouter.getUserService().authenticate(req.query.userName, req.query.password);
 
                 if (result) {
                     const token = jsonwebtoken.sign({
                         exp: Math.floor(Date.now() / 1000) + (60 * 60),
-                        username: req.query.username,
+                        userName: req.query.userName,
                     }, '=H6gMEL2h-8-UD6j');
 
                     res.json({
@@ -37,7 +37,7 @@ export class UserRouter extends BaseRouter {
                     return;
                 }
 
-                req['user'] = decodedToken.username;
+                req['user'] = decodedToken.userName;
 
                 const result: User = await BaseRouter.getUserService().find(req['user']);
 

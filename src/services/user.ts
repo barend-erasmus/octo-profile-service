@@ -15,11 +15,11 @@ export class UserService {
 
     }
 
-    public async authenticate(username: string, password: string): Promise<boolean> {
+    public async authenticate(userName: string, password: string): Promise<boolean> {
 
         const hashedPassword: string = this.hashStrategy.hash(password);
 
-        const user: User = await this.userRepository.find(username);
+        const user: User = await this.userRepository.find(userName);
 
         if (!user) {
             return false;
@@ -47,9 +47,9 @@ export class UserService {
 
     }
 
-    public async find(username: string): Promise<User> {
+    public async find(userName: string): Promise<User> {
 
-        const user: User = await this.userRepository.find(username);
+        const user: User = await this.userRepository.find(userName);
 
         if (user) {
             user.clearPassword();

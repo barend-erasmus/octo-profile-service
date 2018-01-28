@@ -171,7 +171,7 @@ export class BaseRepository {
                 allowNull: true,
                 type: Sequelize.STRING,
             },
-            username: {
+            userName: {
                 allowNull: true,
                 type: Sequelize.STRING,
             },
@@ -234,18 +234,18 @@ export class BaseRepository {
         };
     }
 
-    constructor(private host: string, private username: string, private password: string) {
+    constructor(private host: string, private userName: string, private password: string) {
 
         if (!BaseRepository.sequelize) {
 
-            if (!host && !username && !password) {
+            if (!host && !userName && !password) {
 
                 BaseRepository.sequelize = new Sequelize(null, null, null, {
                     dialect: 'sqlite',
                     logging: false,
                 });
             } else {
-                BaseRepository.sequelize = new Sequelize('octo-profile-service', username, password, {
+                BaseRepository.sequelize = new Sequelize('octo-profile-service', userName, password, {
                     dialect: 'postgres',
                     host,
                     logging: false,

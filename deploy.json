@@ -5,12 +5,6 @@
         "password": "$password"
     },
     "commands": [
-        "sudo apt-get update",
-        "curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -",
-        "sudo apt-get install -y nodejs",
-
-        "npm install pm2 -g",
-
         "mkdir /logs",
         "npm --prefix /opt/octo-profile-service install",
         "pm2 stop octo-profile-service",
@@ -18,7 +12,7 @@
     ],
     "directories": [
         {
-            "source": "$workspace/src",
+            "source": "$workspace/dist",
             "destination": "/opt/octo-profile-service/src"
         }
     ],
