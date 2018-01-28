@@ -2,31 +2,29 @@ import { Education } from './education';
 import { PortfolioItem } from './portfolio-item';
 import { Skill } from './skill';
 import { WorkExperience } from './work-experience';
+import { ContactInformation } from './contact-infomation';
+import { Entity } from './entity';
+import { SocialInformation } from './social-infomation';
+import { PersonalInformation } from './personal-information';
+import { Address } from './address';
 
-export class Profile {
+export class Profile extends Entity {
     constructor(
+        id: string,
         public about: string,
-        public address: string,
-        public birthDate: Date,
-        public contactNumber: string,
+        public contactInformation: ContactInformation,
         public education: Education[],
-        public emailAddress: string,
-        public firstName: string,
-        public googlePlusLink: string,
-        public id: string,
         public image: string,
-        public lastName: string,
-        public linkedInLink: string,
         public message: string,
+        public personalInformation: PersonalInformation,
         public portfolio: PortfolioItem[],
         public skills: Skill[],
-        public twitterLink: string,
+        public socialInformation: SocialInformation,
         public type: string,
         public userName: string,
-        public website: string,
         public workExperiences: WorkExperience[],
     ) {
-
+        super(id);
     }
 
     public setUserName(userName: string): void {
@@ -34,15 +32,18 @@ export class Profile {
     }
 
     public static empty(): Profile {
-        return new Profile(null, null, null, null, [], null, null, null, null, null, null, null, null, [], [], null, null, null, null, []);
+        return new Profile(null, null, null, null, null, null, null, null, null, null, null, null, null);
     }
 
     public static getProfileBarendErasmus(): Profile {
         return new Profile(
             'Experienced Software Engineer with a demonstrated history of working in the agriculture and medical industry.',
             '14 Santa Barbara, 63 Blaauwberg Road, Table View, Cape Town, South Africa, 7441',
-            new Date(1996, 4, 23),
-            '+27 76 654 2813',
+            new ContactInformation(
+                new Address('Cape Town', 'South Africa', '14 Santa Barbara', '63 Blaauwberg Road, Table View', '7441'),
+                '0766542813',
+                'developersworkspace@gmail.com'
+            ),
             [
                 new Education(
                     'The school is situated at the foot of Table Mountain right next to the historical Welgemeend in Cape Town. The school has an enrolment of approximately 500 pupils, who are divided into three houses: Reijger, Dromedaris and De Goede Hoop, named after the three ships that Jan van Riebeeck landed in Cape Town in 1652.',
@@ -52,14 +53,13 @@ export class Profile {
                     new Date(2014, 11, 1),
                 ),
             ],
-            'developersworkspace@gmail.com',
-            'Barend',
-            'https://plus.google.com/u/0/104510562212077465584',
-            'barend-erasmus',
             'https://media-exp2.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAVqAAAAJDk4NTNjMDc4LTczNTctNDZmMC1iMGEyLWQyOTg3ODFhN2E3Mw.jpg',
-            'Erasmus',
-            'https://www.linkedin.com/in/developersworkspace',
-            null,
+            '',
+            new PersonalInformation(
+                new Date(1996, 4, 23),
+                'Barend',
+                'Erasmus'
+            ),
             [
                 new PortfolioItem(
                     'BragStones is a mobile application where proud users can create scrapbook albums about their children and/or grandchildren.',
@@ -310,10 +310,14 @@ export class Profile {
                     3,
                 ),
             ],
-            null,
-            'resume-5',
+            new SocialInformation(
+                '',
+                '',
+                '',
+                '',
+            ),
+            'resume-1',
             'barend-erasmus',
-            'https://developersworkspace.co.za',
             [
                 new WorkExperience(
                     'Synapseon',
@@ -350,78 +354,6 @@ export class Profile {
                     'Cape Town, South Africa',
                     'Full Stack Developer',
                     new Date(2016, 1, 1),
-                ),
-            ],
-        );
-    }
-
-    public static getProfileMarlaTarrant(): Profile {
-        return new Profile(
-            '',
-            '14 Santa Barbara, 63 Blaauwberg Road, Table View, Cape Town, South Africa, 7441',
-            new Date(1996, 10, 7),
-            '+27 76 428 3935',
-            [
-                new Education(
-                    'The school is situated at the foot of Table Mountain right next to the historical Welgemeend in Cape Town. The school has an enrolment of approximately 500 pupils, who are divided into three houses: Reijger, Dromedaris and De Goede Hoop, named after the three ships that Jan van Riebeeck landed in Cape Town in 1652.',
-                    new Date(2010, 0, 1),
-                    'Jan van Riebeeck High',
-                    'National Senior Certificate',
-                    new Date(2014, 11, 1),
-                ),
-            ],
-            'tarrantmarlajean@gmail.com',
-            'Marla',
-            null,
-            'marla-tarrant',
-            'https://media-exp2.licdn.com/media/AAEAAQAAAAAAAAlIAAAAJDNjZmQ3YWE4LWZhOWUtNDZlNC04ZDA4LTY2ZTY4NWE3ZTliZQ.jpg',
-            'Tarrant',
-            'https://www.linkedin.com/in/marla-jean-tarrant-530735b0',
-            null,
-            [
-            ],
-            [
-            ],
-            null,
-            'resume-4',
-            'marla-tarrant',
-            null,
-            [
-                new WorkExperience(
-                    'Euromonitor International',
-                    true,
-                    null,
-                    new Date(2017, 8, 1),
-                    'Cape Town, South Africa',
-                    'Office Administrator',
-                    null,
-                ),
-                new WorkExperience(
-                    'Frontosa Technologies',
-                    false,
-                    null,
-                    new Date(2016, 8, 1),
-                    'Cape Town, South Africa',
-                    'Sales Consultant',
-                    new Date(2017, 7, 1),
-                ),
-                new WorkExperience(
-                    'TSM Consulting',
-                    false,
-                    null,
-                    new Date(2016, 0, 1),
-                    'Cape Town, South Africa',
-                    'Social Media Marketer and Graphic Designer',
-                    new Date(2016, 7, 1),
-                ),
-                new WorkExperience(
-                    'Diesel Digital',
-                    false,
-                    null,
-                    new Date(2015, 8, 1),
-                    'Cape Town, South Africa',
-                    'Graphic Designer',
-                    new Date(2015, 10, 1),
                 ),
             ],
         );
