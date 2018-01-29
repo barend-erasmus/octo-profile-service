@@ -2,10 +2,14 @@ import * as Sequelize from 'sequelize';
 
 export class BaseRepository {
     protected static models: {
+        Address: Sequelize.Model<{}, {}>,
+        ContactInformation: Sequelize.Model<{}, {}>,
         Education: Sequelize.Model<{}, {}>,
+        PersonalInformation: Sequelize.Model<{}, {}>,
         PortfolioItem: Sequelize.Model<{}, {}>,
         Profile: Sequelize.Model<{}, {}>,
         Skill: Sequelize.Model<{}, {}>,
+        SocialInformation: Sequelize.Model<{}, {}>,
         Usage: Sequelize.Model<{}, {}>,
         User: Sequelize.Model<{}, {}>,
         WorkExperience: Sequelize.Model<{}, {}>,
@@ -14,6 +18,40 @@ export class BaseRepository {
     protected static sequelize: Sequelize.Sequelize = null;
 
     private static defineModels(): void {
+
+        const Address = BaseRepository.sequelize.define('address', {
+            city: {
+                allowNull: true,
+                type: Sequelize.STRING,
+            },
+            country: {
+                allowNull: true,
+                type: Sequelize.STRING,
+            },
+            line1: {
+                allowNull: true,
+                type: Sequelize.STRING,
+            },
+            line2: {
+                allowNull: true,
+                type: Sequelize.STRING,
+            },
+            postalCode: {
+                allowNull: true,
+                type: Sequelize.STRING,
+            },
+        });
+
+        const ContactInformation = BaseRepository.sequelize.define('contactInformation', {
+            contactNumber: {
+                allowNull: true,
+                type: Sequelize.STRING,
+            },
+            emailAddress: {
+                allowNull: true,
+                type: Sequelize.STRING,
+            },
+        });
 
         const Education = BaseRepository.sequelize.define('education', {
             description: {
@@ -35,6 +73,22 @@ export class BaseRepository {
             to: {
                 allowNull: true,
                 type: Sequelize.DATE,
+            },
+        });
+
+
+        const PersonalInformation = BaseRepository.sequelize.define('personalInformation', {
+            birthDate: {
+                allowNull: true,
+                type: Sequelize.DATE,
+            },
+            firstName: {
+                allowNull: true,
+                type: Sequelize.STRING,
+            },
+            lastName: {
+                allowNull: true,
+                type: Sequelize.STRING,
             },
         });
 
@@ -62,30 +116,6 @@ export class BaseRepository {
                 allowNull: true,
                 type: Sequelize.STRING,
             },
-            address: {
-                allowNull: true,
-                type: Sequelize.STRING,
-            },
-            birthDate: {
-                allowNull: true,
-                type: Sequelize.DATE,
-            },
-            contactNumber: {
-                allowNull: true,
-                type: Sequelize.STRING,
-            },
-            emailAddress: {
-                allowNull: true,
-                type: Sequelize.STRING,
-            },
-            firstName: {
-                allowNull: true,
-                type: Sequelize.STRING,
-            },
-            googlePlusLink: {
-                allowNull: true,
-                type: Sequelize.STRING,
-            },
             image: {
                 allowNull: true,
                 type: Sequelize.TEXT,
@@ -94,27 +124,11 @@ export class BaseRepository {
                 allowNull: false,
                 type: Sequelize.STRING,
             },
-            lastName: {
-                allowNull: true,
-                type: Sequelize.STRING,
-            },
-            linkedInLink: {
-                allowNull: true,
-                type: Sequelize.STRING,
-            },
             message: {
                 allowNull: true,
                 type: Sequelize.STRING,
             },
-            twitterLink: {
-                allowNull: true,
-                type: Sequelize.STRING,
-            },
             type: {
-                allowNull: true,
-                type: Sequelize.STRING,
-            },
-            website: {
                 allowNull: true,
                 type: Sequelize.STRING,
             },
@@ -136,6 +150,25 @@ export class BaseRepository {
             years: {
                 allowNull: true,
                 type: Sequelize.NUMERIC,
+            },
+        });
+
+        const SocialInformation = BaseRepository.sequelize.define('socialInformation', {
+            googlePlusLink: {
+                allowNull: true,
+                type: Sequelize.STRING,
+            },
+            linkedInLink: {
+                allowNull: true,
+                type: Sequelize.STRING,
+            },
+            twitterLink: {
+                allowNull: true,
+                type: Sequelize.STRING,
+            },
+            website: {
+                allowNull: true,
+                type: Sequelize.STRING,
             },
         });
 
@@ -208,14 +241,26 @@ export class BaseRepository {
             },
         });
 
+        ContactInformation.hasOne(Address, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
+        Address.belongsTo(ContactInformation, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
+
+        Profile.hasOne(ContactInformation, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
+        ContactInformation.belongsTo(Profile, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
+
         Profile.hasMany(Education, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
         Education.belongsTo(Profile, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
 
+        Profile.hasOne(PersonalInformation, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
+        PersonalInformation.belongsTo(Profile, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
+       
         Profile.hasMany(PortfolioItem, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
         PortfolioItem.belongsTo(Profile, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
 
         Profile.hasMany(Skill, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
         Skill.belongsTo(Profile, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
+
+        Profile.hasOne(SocialInformation, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
+        SocialInformation.belongsTo(Profile, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
 
         Profile.hasMany(WorkExperience, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
         WorkExperience.belongsTo(Profile, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
@@ -224,10 +269,14 @@ export class BaseRepository {
         Profile.belongsTo(User, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
 
         this.models = {
+            Address,
+            ContactInformation,
             Education,
+            PersonalInformation,
             PortfolioItem,
             Profile,
             Skill,
+            SocialInformation,
             Usage,
             User,
             WorkExperience,

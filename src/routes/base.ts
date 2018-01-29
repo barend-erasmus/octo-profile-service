@@ -15,6 +15,8 @@ import { IHashStrategy } from '../interfaces/hash-strategy';
 import { MD5HashStrategy } from '../strategies/md5-hash-strategy';
 import { IStringValidationStrategy } from '../interfaces/string-validation-strategy';
 import { EmailAddressValidationStrategy } from '../strategies/email-address-validation-strategy';
+import { IProfileValidationStrategy } from '../interfaces/profile-validation-strategy';
+import { ProfileValidationStrategy } from '../strategies/profile-validation-strategy';
 
 export class BaseRouter {
 
@@ -23,12 +25,12 @@ export class BaseRouter {
 
             await new BaseRepository(config.database.host, config.database.userName, config.database.password).sync(true);
 
-            let user: User = await BaseRouter.getUserService().find('developersworkspace@gmail.com');
+            // let user: User = await BaseRouter.getUserService().find('developersworkspace@gmail.com');
 
-            if (!user) {
-                user = await BaseRouter.getUserService().create(new User('developersworkspace@gmail.com', '12345678'));
-                await BaseRouter.getProfileService().create(Profile.getProfileBarendErasmus(), user.userName);
-            }
+            // if (!user) {
+            //     user = await BaseRouter.getUserService().create(new User('developersworkspace@gmail.com', '12345678'));
+            //     await BaseRouter.getProfileService().create(Profile.getProfileBarendErasmus(), user.userName);
+            // }
 
             res.json(true);
 
@@ -47,7 +49,9 @@ export class BaseRouter {
 
         const exceptionHelper: ExceptionHelper = new ExceptionHelper(profileRepository, userRepository);
 
-        const profileService: ProfileService = new ProfileService(exceptionHelper, profileRepository, exceptionHelper, userRepository);
+        const profileValidationStrategy: IProfileValidationStrategy = new ProfileValidationStrategy();
+
+        const profileService: ProfileService = new ProfileService(exceptionHelper, profileRepository, profileValidationStrategy, exceptionHelper, userRepository);
 
         return profileService;
     }

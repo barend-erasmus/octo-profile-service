@@ -1,14 +1,10 @@
 import * as bodyParser from 'body-parser';
-import * as cookieParser from 'cookie-parser';
 import * as cors from 'cors';
 import * as express from 'express';
 import * as jsonwebtoken from 'jsonwebtoken';
 import * as path from 'path';
 import * as yargs from 'yargs';
 import { config } from './config';
-import { Profile } from './entities/profile';
-import { User } from './entities/user';
-import { BaseRepository } from './repositories/sequelize/base';
 import { BaseRouter } from './routes/base';
 import { ProfileRouter } from './routes/profile';
 import { UsageRouter } from './routes/usage';
@@ -20,7 +16,6 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(cors());
-app.use(cookieParser());
 
 function customMiddleware(req: express.Request, res: express.Response, next: express.NextFunction) {
 

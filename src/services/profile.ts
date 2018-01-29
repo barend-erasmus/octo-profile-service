@@ -5,12 +5,15 @@ import { IUserRepository } from '../repositories/user';
 import { WorkExperience } from '../entities/work-experience';
 import { IProfileExceptionHelper } from '../interfaces/profile-exception-helper';
 import { IUserExceptionHelper } from '../interfaces/user-exception-helper';
+import { IProfileValidationStrategy } from '../interfaces/profile-validation-strategy';
+import { ValidationError } from '../errors/validation-error';
 
 export class ProfileService {
 
     constructor(
         private profileExceptionHelper: IProfileExceptionHelper,
         private profileRepository: IProfileRepository,
+        private profileValidationStrategy: IProfileValidationStrategy,
         private userExceptionHelper: IUserExceptionHelper,
         private userRepository: IUserRepository,
     ) {
@@ -32,6 +35,8 @@ export class ProfileService {
     public async create(profile: Profile, userName: string): Promise<Profile> {
 
         profile.setUserName(userName);
+
+        this.throwIfProfileInvalid(profile);
 
         await this.profileExceptionHelper.throwIfProfileExist(profile.id);
 
@@ -81,5 +86,13 @@ export class ProfileService {
 
         return profile;
 
+    }
+
+    private throwIfProfileInvalid(profile: Profile): void {
+        const validationMessages: string[] = this.profileValidationStrategy.getValidationMessages(profile);
+
+        if (validationMessages.length !== 0) {
+            throw new ValidationError('Profile is invalid', validationMessages);
+        }
     }
 }

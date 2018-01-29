@@ -5,6 +5,10 @@ import { Skill } from '../../entities/skill';
 import { WorkExperience } from '../../entities/work-experience';
 import { IProfileRepository } from './../profile';
 import { BaseRepository } from './base';
+import { ContactInformation } from '../../entities/contact-infomation';
+import { Address } from '../../entities/address';
+import { PersonalInformation } from '../../entities/personal-information';
+import { SocialInformation } from '../../entities/social-infomation';
 
 export class ProfileRepository extends BaseRepository implements IProfileRepository {
 
@@ -20,52 +24,21 @@ export class ProfileRepository extends BaseRepository implements IProfileReposit
             },
         });
 
-        const result: any = await BaseRepository.models.Profile.create({
-            about: profile.about,
-            address: profile.address,
-            birthDate: profile.birthDate,
-            contactNumber: profile.contactNumber,
-            education: profile.education,
-            emailAddress: profile.emailAddress,
-            firstName: profile.firstName,
-            googlePlusLink: profile.googlePlusLink,
-            image: profile.image,
-            key: profile.id,
-            lastName: profile.lastName,
-            linkedInLink: profile.linkedInLink,
-            message: profile.message,
-            portfolioItems: profile.portfolio,
-            skills: profile.skills,
-            twitterLink: profile.twitterLink,
-            type: profile.type,
-            userId: user.id,
-            website: profile.website,
-            workExperiences: profile.workExperiences,
-        }, {
-                include: [
-                    {
-                        model: BaseRepository.models.Education,
-                    },
-                    {
-                        model: BaseRepository.models.PortfolioItem,
-                    },
-                    {
-                        model: BaseRepository.models.Skill,
-                    },
-                    {
-                        model: BaseRepository.models.WorkExperience,
-                    },
-                ],
-            });
-
-        return profile;
-    }
-
-    public async find(id: string): Promise<Profile> {
-        const profile: any = await BaseRepository.models.Profile.find({
+        const result: any = await BaseRepository.models.Profile.create(profile, {
             include: [
                 {
+                    model: BaseRepository.models.ContactInformation,
+                    include: [
+                        {
+                            model: BaseRepository.models.Address,
+                        }
+                    ]
+                },
+                {
                     model: BaseRepository.models.Education,
+                },
+                {
+                    model: BaseRepository.models.PersonalInformation,
                 },
                 {
                     model: BaseRepository.models.PortfolioItem,
@@ -74,7 +47,42 @@ export class ProfileRepository extends BaseRepository implements IProfileReposit
                     model: BaseRepository.models.Skill,
                 },
                 {
-                    model: BaseRepository.models.User,
+                    model: BaseRepository.models.SocialInformation,
+                },
+                {
+                    model: BaseRepository.models.WorkExperience,
+                },
+            ],
+        });
+
+        return profile;
+    }
+
+    public async find(id: string): Promise<Profile> {
+        const profile: any = await BaseRepository.models.Profile.find({
+            include: [
+                {
+                    model: BaseRepository.models.ContactInformation,
+                    include: [
+                        {
+                            model: BaseRepository.models.Address,
+                        }
+                    ]
+                },
+                {
+                    model: BaseRepository.models.Education,
+                },
+                {
+                    model: BaseRepository.models.PersonalInformation,
+                },
+                {
+                    model: BaseRepository.models.PortfolioItem,
+                },
+                {
+                    model: BaseRepository.models.Skill,
+                },
+                {
+                    model: BaseRepository.models.SocialInformation,
                 },
                 {
                     model: BaseRepository.models.WorkExperience,
@@ -85,32 +93,7 @@ export class ProfileRepository extends BaseRepository implements IProfileReposit
             },
         });
 
-        if (!profile) {
-            return null;
-        }
-
-        return new Profile(
-            profile.about,
-            profile.address,
-            profile.birthDate,
-            profile.contactNumber,
-            profile.education.map((education) => new Education(education.description, education.from, education.institutionName, education.qualification, education.to)),
-            profile.emailAddress,
-            profile.firstName,
-            profile.googlePlusLink,
-            profile.key,
-            profile.image,
-            profile.lastName,
-            profile.linkedInLink,
-            profile.message,
-            profile.portfolioItems.map((portfolioItem) => new PortfolioItem(portfolioItem.description, portfolioItem.image, portfolioItem.link, portfolioItem.name)),
-            profile.skills.map((skill) => new Skill(skill.description, skill.level, skill.name, skill.years)),
-            profile.twitterLink,
-            profile.type,
-            profile.user.userName,
-            profile.website,
-            profile.workExperiences.map((workExperience) => new WorkExperience(workExperience.companyName, workExperience.currentlyEmployed, workExperience.description, workExperience.from, workExperience.location, workExperience.position, workExperience.to)),
-        );
+        return this.mapProfile(profile);
     }
 
     public async list(userName: string): Promise<Profile[]> {
@@ -144,28 +127,7 @@ export class ProfileRepository extends BaseRepository implements IProfileReposit
             },
         });
 
-        return profiles.map((profile) => new Profile(
-            profile.about,
-            profile.address,
-            profile.birthDate,
-            profile.contactNumber,
-            profile.education.map((education) => new Education(education.description, education.from, education.institutionName, education.qualification, education.to)),
-            profile.emailAddress,
-            profile.firstName,
-            profile.googlePlusLink,
-            profile.key,
-            profile.image,
-            profile.lastName,
-            profile.linkedInLink,
-            profile.message,
-            profile.portfolioItems.map((portfolioItem) => new PortfolioItem(portfolioItem.description, portfolioItem.image, portfolioItem.link, portfolioItem.name)),
-            profile.skills.map((skill) => new Skill(skill.description, skill.level, skill.name, skill.years)),
-            profile.twitterLink,
-            profile.type,
-            profile.user.userName,
-            profile.website,
-            profile.workExperiences.map((workExperience) => new WorkExperience(workExperience.companyName, workExperience.currentlyEmployed, workExperience.description, workExperience.from, workExperience.location, workExperience.position, workExperience.to)),
-        ));
+        return profiles.map((profile) => this.mapProfile(profile));
     }
 
     public async update(profile: Profile): Promise<Profile> {
@@ -226,20 +188,20 @@ export class ProfileRepository extends BaseRepository implements IProfileReposit
             });
         }
 
-        existingProfile.about = profile.about;
-        existingProfile.address = profile.address;
-        existingProfile.birthDate = profile.birthDate;
-        existingProfile.contactNumber = profile.contactNumber;
-        existingProfile.emailAddress = profile.emailAddress;
-        existingProfile.firstName = profile.firstName;
-        existingProfile.googlePlusLink = profile.googlePlusLink;
-        existingProfile.image = profile.image;
-        existingProfile.lastName = profile.lastName;
-        existingProfile.linkedInLink = profile.linkedInLink;
-        existingProfile.message = profile.message;
-        existingProfile.twitterLink = profile.twitterLink;
-        existingProfile.type = profile.type;
-        existingProfile.website = profile.website;
+        // existingProfile.about = profile.about;
+        // existingProfile.address = profile.address;
+        // existingProfile.birthDate = profile.birthDate;
+        // existingProfile.contactNumber = profile.contactNumber;
+        // existingProfile.emailAddress = profile.emailAddress;
+        // existingProfile.firstName = profile.firstName;
+        // existingProfile.googlePlusLink = profile.googlePlusLink;
+        // existingProfile.image = profile.image;
+        // existingProfile.lastName = profile.lastName;
+        // existingProfile.linkedInLink = profile.linkedInLink;
+        // existingProfile.message = profile.message;
+        // existingProfile.twitterLink = profile.twitterLink;
+        // existingProfile.type = profile.type;
+        // existingProfile.website = profile.website;
 
         for (const education of profile.education) {
             await BaseRepository.models.Education.create({
@@ -288,5 +250,46 @@ export class ProfileRepository extends BaseRepository implements IProfileReposit
         await existingProfile.save();
 
         return this.find(existingProfile.key);
+    }
+
+    private mapProfile(profile: any): Profile {
+        if (!profile) {
+            return null;
+        }
+
+        return new Profile(
+            profile.key,
+            profile.about,
+            new ContactInformation(
+                new Address(
+                    profile.contactInformation.address.city,
+                    profile.contactInformation.address.country,
+                    profile.contactInformation.address.line1,
+                    profile.contactInformation.address.line2,
+                    profile.contactInformation.address.postalCode,
+                ),
+                profile.contactInformation.contactNumber,
+                profile.contactInformation.emailAddress,
+            ),
+            profile.education.map((education) => new Education(education.description, education.from, education.institutionName, education.qualification, education.to)),
+            profile.image,
+            profile.message,
+            new PersonalInformation(
+                profile.personalInformation.birthDate,
+                profile.personalInformation.firstName,
+                profile.personalInformation.lastName,
+            ),
+            profile.portfolioItems.map((portfolioItem) => new PortfolioItem(portfolioItem.description, portfolioItem.image, portfolioItem.link, portfolioItem.name)),
+            profile.skills.map((skill) => new Skill(skill.description, skill.level, skill.name, skill.years)),
+            new SocialInformation(
+                profile.sociallInformation.googlePlusLink,
+                profile.sociallInformation.linkedInLink,
+                profile.sociallInformation.twitterLink,
+                profile.sociallInformation.website,
+            ),
+            profile.type,
+            profile.user.userName,
+            profile.workExperiences.map((workExperience) => new WorkExperience(workExperience.companyName, workExperience.currentlyEmployed, workExperience.description, workExperience.from, workExperience.location, workExperience.position, workExperience.to)),
+        );
     }
 }

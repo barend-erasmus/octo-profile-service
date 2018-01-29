@@ -9,6 +9,7 @@ import { PersonalInformation } from './personal-information';
 import { Address } from './address';
 
 export class Profile extends Entity {
+
     constructor(
         id: string,
         public about: string,

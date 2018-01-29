@@ -7,6 +7,7 @@ import { IUserRepository } from '../repositories/user';
 import { Profile } from '../entities/profile';
 import { IProfileExceptionHelper } from '../interfaces/profile-exception-helper';
 import { IUserExceptionHelper } from '../interfaces/user-exception-helper';
+import { IProfileValidationStrategy } from '../interfaces/profile-validation-strategy';
 
 describe('ProfileService', () => {
 
@@ -14,6 +15,7 @@ describe('ProfileService', () => {
 
         let profileExceptionHelper: IProfileExceptionHelper = null;
         let profileRepository: IProfileRepository = null;
+        let profileValidationStrategy: IProfileValidationStrategy = null;
         let userExceptionHelper: IUserExceptionHelper = null;
         let userRepository: IUserRepository = null;
 
@@ -30,13 +32,17 @@ describe('ProfileService', () => {
                 find: (id: string) => null,
             };
 
+            profileValidationStrategy = <IProfileValidationStrategy>{
+                getValidationMessages: (profile: Profile) => null,
+            };
+
             userExceptionHelper = <IUserExceptionHelper>{
                 throwIfUserNotExist: (userName: string) => null,
             };
 
             userRepository = <IUserRepository>{};
 
-            profileService = new ProfileService(profileExceptionHelper, profileRepository, userExceptionHelper, userRepository);
+            profileService = new ProfileService(profileExceptionHelper, profileRepository, profileValidationStrategy, userExceptionHelper, userRepository);
         });
 
         afterEach(async () => {
