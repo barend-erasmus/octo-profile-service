@@ -1,5 +1,6 @@
 import * as express from 'express';
 import * as jsonwebtoken from 'jsonwebtoken';
+import { config } from '../config';
 
 export class CustomMiddleware {
 
@@ -9,7 +10,7 @@ export class CustomMiddleware {
             const token: string = CustomMiddleware.getAuthenticationToken(req);
 
             if (token) {
-                const decodedToken: any = jsonwebtoken.verify(token, '=H6gMEL2h-8-UD6j');
+                const decodedToken: any = jsonwebtoken.verify(token, config.authentication.secret);
 
                 req['user'] = decodedToken.userName;
 

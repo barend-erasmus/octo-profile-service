@@ -188,20 +188,25 @@ export class ProfileRepository extends BaseRepository implements IProfileReposit
             });
         }
 
-        // existingProfile.about = profile.about;
-        // existingProfile.address = profile.address;
-        // existingProfile.birthDate = profile.birthDate;
-        // existingProfile.contactNumber = profile.contactNumber;
-        // existingProfile.emailAddress = profile.emailAddress;
-        // existingProfile.firstName = profile.firstName;
-        // existingProfile.googlePlusLink = profile.googlePlusLink;
-        // existingProfile.image = profile.image;
-        // existingProfile.lastName = profile.lastName;
-        // existingProfile.linkedInLink = profile.linkedInLink;
-        // existingProfile.message = profile.message;
-        // existingProfile.twitterLink = profile.twitterLink;
-        // existingProfile.type = profile.type;
-        // existingProfile.website = profile.website;
+        existingProfile.about = profile.about;
+        existingProfile.contactInformation.address.city = profile.contactInformation.address.city;
+        existingProfile.contactInformation.address.country = profile.contactInformation.address.country;
+        existingProfile.contactInformation.address.line1 = profile.contactInformation.address.line1;
+        existingProfile.contactInformation.address.line2 = profile.contactInformation.address.line2;
+        existingProfile.contactInformation.address.postalCode = profile.contactInformation.address.postalCode;
+        existingProfile.contactInformation.contactNumber = profile.contactInformation.contactNumber;
+        existingProfile.contactInformation.emailAddress = profile.contactInformation.emailAddress;
+        existingProfile.image = profile.image;
+        existingProfile.message = profile.message;
+        existingProfile.personalInformation.birthDate = profile.personalInformation.birthDate;
+        existingProfile.personalInformation.firstName = profile.personalInformation.firstName;
+        existingProfile.personalInformation.lastName = profile.personalInformation.lastName;
+        existingProfile.socialInformation.googlePlusLink = profile.socialInformation.googlePlusLink;
+        existingProfile.socialInformation.linkedInLink = profile.socialInformation.linkedInLink;
+        existingProfile.socialInformation.twitterLink = profile.socialInformation.twitterLink;
+        existingProfile.socialInformation.website = profile.socialInformation.website;
+        existingProfile.type = profile.type;
+        existingProfile.userName = profile.userName;
 
         for (const education of profile.education) {
             await BaseRepository.models.Education.create({

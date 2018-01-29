@@ -27,9 +27,9 @@ export class UsageService {
             return null;
         }
 
-        const countByFirstTime: any[] = await this.usageRepository.countByFirstTime(profileId, moment().subtract(7, 'd').toDate());
+        const countByFirstTime: any[] = await this.usageRepository.countByFirstTime(profileId, this.getDate7DaysFromNow());
 
-        const countByReferer: any[] = await this.usageRepository.countByReferer(profileId, moment().subtract(7, 'd').toDate());
+        const countByReferer: any[] = await this.usageRepository.countByReferer(profileId, this.getDate7DaysFromNow());
 
         return new UsageCounts(
             countByFirstTime,
@@ -44,12 +44,12 @@ export class UsageService {
     ): Promise<void> {
 
         await this.usageRepository.create(new Usage(
-            req.query ? (req.query.lastVisit ? false : true) : true,
-            req.get('X-Real-IP') || '::1',
+            this.isFirstTimeVisit(req),
+            this.getIPAddress(req),
             profileId,
-            req.get('referer'),
+            this.getReferer(req),
             new Date(),
-            isBot(req.get('User-Agent')) ? 'bot' : 'browser',
+            this.getRequestType(req),
         ));
     }
 
@@ -58,5 +58,25 @@ export class UsageService {
     ): Promise<Usage[]> {
 
         return this.usageRepository.list(profileId);
+    }
+
+    private getDate7DaysFromNow(): Date {
+        return moment().subtract(7, 'd').toDate();
+    }
+
+    private getIPAddress(req: express.Request): string {
+        return req.get('X-Real-IP') || '::1';
+    }
+
+    private getRequestType(req: express.Request): string {
+        return isBot(req.get('User-Agent')) ? 'bot' : 'browser';
+    }
+
+    private getReferer(req: express.Request): string {
+        return req.get('referer');
+    }
+
+    private isFirstTimeVisit(req: express.Request): boolean {
+        return req.query ? (req.query.lastVisit ? false : true) : true;
     }
 }
