@@ -1,12 +1,12 @@
+import { Address } from './address';
+import { ContactInformation } from './contact-infomation';
 import { Education } from './education';
+import { Entity } from './entity';
+import { PersonalInformation } from './personal-information';
 import { PortfolioItem } from './portfolio-item';
 import { Skill } from './skill';
-import { WorkExperience } from './work-experience';
-import { ContactInformation } from './contact-infomation';
-import { Entity } from './entity';
 import { SocialInformation } from './social-infomation';
-import { PersonalInformation } from './personal-information';
-import { Address } from './address';
+import { WorkExperience } from './work-experience';
 
 export class Profile extends Entity {
 
@@ -43,7 +43,7 @@ export class Profile extends Entity {
             new ContactInformation(
                 new Address('Cape Town', 'South Africa', '14 Santa Barbara', '63 Blaauwberg Road, Table View', '7441'),
                 '0766542813',
-                'developersworkspace@gmail.com'
+                'developersworkspace@gmail.com',
             ),
             [
                 new Education(
@@ -59,7 +59,7 @@ export class Profile extends Entity {
             new PersonalInformation(
                 new Date(1996, 4, 23),
                 'Barend',
-                'Erasmus'
+                'Erasmus',
             ),
             [
                 new PortfolioItem(

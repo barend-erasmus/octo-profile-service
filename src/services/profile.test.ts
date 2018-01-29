@@ -1,13 +1,13 @@
 import { expect } from 'chai';
 import 'mocha';
 import * as sinon from 'sinon';
-import { IProfileRepository } from '../repositories/profile';
-import { ProfileService } from './profile';
-import { IUserRepository } from '../repositories/user';
 import { Profile } from '../entities/profile';
 import { IProfileExceptionHelper } from '../interfaces/profile-exception-helper';
-import { IUserExceptionHelper } from '../interfaces/user-exception-helper';
 import { IProfileValidationStrategy } from '../interfaces/profile-validation-strategy';
+import { IUserExceptionHelper } from '../interfaces/user-exception-helper';
+import { IProfileRepository } from '../repositories/profile';
+import { IUserRepository } from '../repositories/user';
+import { ProfileService } from './profile';
 
 describe('ProfileService', () => {
 
@@ -23,24 +23,24 @@ describe('ProfileService', () => {
 
         beforeEach(async () => {
 
-            profileExceptionHelper = <IProfileExceptionHelper>{
+            profileExceptionHelper = {
                 throwIfProfileExist: (id: string) => null,
-            };
+            } as IProfileExceptionHelper;
 
-            profileRepository = <IProfileRepository>{
+            profileRepository = {
                 create: (profile: Profile) => null,
                 find: (id: string) => null,
-            };
+            } as IProfileRepository;
 
-            profileValidationStrategy = <IProfileValidationStrategy>{
+            profileValidationStrategy = {
                 getValidationMessages: (profile: Profile) => null,
-            };
+            } as IProfileValidationStrategy;
 
-            userExceptionHelper = <IUserExceptionHelper>{
+            userExceptionHelper = {
                 throwIfUserNotExist: (userName: string) => null,
-            };
+            } as IUserExceptionHelper;
 
-            userRepository = <IUserRepository>{};
+            userRepository = {} as IUserRepository;
 
             profileService = new ProfileService(profileExceptionHelper, profileRepository, profileValidationStrategy, userExceptionHelper, userRepository);
         });
@@ -64,7 +64,6 @@ describe('ProfileService', () => {
 
             expect(setUserNameSpy.calledOnce).to.be.true;
         });
-
 
         it('should call throwIfProfileExist of profileExceptionHelper', async () => {
             const profile: Profile = Profile.empty();

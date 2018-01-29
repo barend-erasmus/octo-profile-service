@@ -1,14 +1,14 @@
+import { Address } from '../../entities/address';
+import { ContactInformation } from '../../entities/contact-infomation';
 import { Education } from '../../entities/education';
+import { PersonalInformation } from '../../entities/personal-information';
 import { PortfolioItem } from '../../entities/portfolio-item';
 import { Profile } from '../../entities/profile';
 import { Skill } from '../../entities/skill';
+import { SocialInformation } from '../../entities/social-infomation';
 import { WorkExperience } from '../../entities/work-experience';
 import { IProfileRepository } from './../profile';
 import { BaseRepository } from './base';
-import { ContactInformation } from '../../entities/contact-infomation';
-import { Address } from '../../entities/address';
-import { PersonalInformation } from '../../entities/personal-information';
-import { SocialInformation } from '../../entities/social-infomation';
 
 export class ProfileRepository extends BaseRepository implements IProfileRepository {
 
@@ -27,12 +27,12 @@ export class ProfileRepository extends BaseRepository implements IProfileReposit
         const result: any = await BaseRepository.models.Profile.create(profile, {
             include: [
                 {
-                    model: BaseRepository.models.ContactInformation,
                     include: [
                         {
                             model: BaseRepository.models.Address,
-                        }
-                    ]
+                        },
+                    ],
+                    model: BaseRepository.models.ContactInformation,
                 },
                 {
                     model: BaseRepository.models.Education,
@@ -62,12 +62,12 @@ export class ProfileRepository extends BaseRepository implements IProfileReposit
         const profile: any = await BaseRepository.models.Profile.find({
             include: [
                 {
-                    model: BaseRepository.models.ContactInformation,
                     include: [
                         {
                             model: BaseRepository.models.Address,
-                        }
-                    ]
+                        },
+                    ],
+                    model: BaseRepository.models.ContactInformation,
                 },
                 {
                     model: BaseRepository.models.Education,

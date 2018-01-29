@@ -1,5 +1,5 @@
 import * as crypto from 'crypto';
-import { IHashStrategy } from "../interfaces/hash-strategy";
+import { IHashStrategy } from '../interfaces/hash-strategy';
 
 export class MD5HashStrategy implements IHashStrategy {
     public hash(value: string): string {

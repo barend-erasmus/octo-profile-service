@@ -76,7 +76,6 @@ export class BaseRepository {
             },
         });
 
-
         const PersonalInformation = BaseRepository.sequelize.define('personalInformation', {
             birthDate: {
                 allowNull: true,
@@ -252,7 +251,7 @@ export class BaseRepository {
 
         Profile.hasOne(PersonalInformation, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
         PersonalInformation.belongsTo(Profile, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
-       
+
         Profile.hasMany(PortfolioItem, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
         PortfolioItem.belongsTo(Profile, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
 

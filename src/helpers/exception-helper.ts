@@ -1,9 +1,9 @@
-import { IProfileExceptionHelper } from "../interfaces/profile-exception-helper";
-import { IUserExceptionHelper } from "../interfaces/user-exception-helper";
-import { IProfileRepository } from "../repositories/profile";
-import { IUserRepository } from "../repositories/user";
-import { Profile } from "../entities/profile";
-import { User } from "../entities/user";
+import { Profile } from '../entities/profile';
+import { User } from '../entities/user';
+import { IProfileExceptionHelper } from '../interfaces/profile-exception-helper';
+import { IUserExceptionHelper } from '../interfaces/user-exception-helper';
+import { IProfileRepository } from '../repositories/profile';
+import { IUserRepository } from '../repositories/user';
 
 export class ExceptionHelper implements IProfileExceptionHelper, IUserExceptionHelper {
 

@@ -1,8 +1,8 @@
 import { User } from '../entities/user';
-import { IUserRepository } from '../repositories/user';
-import { IUserExceptionHelper } from '../interfaces/user-exception-helper';
 import { IHashStrategy } from '../interfaces/hash-strategy';
 import { IStringValidationStrategy } from '../interfaces/string-validation-strategy';
+import { IUserExceptionHelper } from '../interfaces/user-exception-helper';
+import { IUserRepository } from '../repositories/user';
 
 export class UserService {
 

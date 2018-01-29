@@ -1,6 +1,6 @@
-import { IProfileValidationStrategy } from "../interfaces/profile-validation-strategy";
-import { Profile } from "../entities/profile";
-import { ContactInformation } from "../entities/contact-infomation";
+import { ContactInformation } from '../entities/contact-infomation';
+import { Profile } from '../entities/profile';
+import { IProfileValidationStrategy } from '../interfaces/profile-validation-strategy';
 
 export class ProfileValidationStrategy implements IProfileValidationStrategy {
 
@@ -10,8 +10,6 @@ export class ProfileValidationStrategy implements IProfileValidationStrategy {
 
     public  getValidationMessages(value: Profile): string[] {
         const messages: string[] = [];
-
-
 
         return messages;
     }

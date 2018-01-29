@@ -1,6 +1,6 @@
-import { IExceptionHelper } from "./exception-helper";
-import { User } from "../entities/user";
-import { Profile } from "../entities/profile";
+import { Profile } from '../entities/profile';
+import { User } from '../entities/user';
+import { IExceptionHelper } from './exception-helper';
 
 export interface IUserExceptionHelper extends IExceptionHelper<User> {
     throwIfUserNameMismatch(user: User, profile: Profile): void;

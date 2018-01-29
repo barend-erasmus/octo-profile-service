@@ -1,4 +1,4 @@
-import { IStringValidationStrategy } from "../interfaces/string-validation-strategy";
+import { IStringValidationStrategy } from '../interfaces/string-validation-strategy';
 
 export class EmailAddressValidationStrategy implements IStringValidationStrategy {
     public validate(value: string): boolean {

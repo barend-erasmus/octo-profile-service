@@ -1,4 +1,4 @@
-import { Address } from "./address";
+import { Address } from './address';
 
 export class ContactInformation {
     constructor(
@@ -6,6 +6,6 @@ export class ContactInformation {
         public contactNumber: string,
         public emailAddress: string,
     ) {
-        
+
     }
 }
