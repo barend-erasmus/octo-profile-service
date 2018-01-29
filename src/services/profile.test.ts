@@ -28,7 +28,7 @@ describe('ProfileService', () => {
             } as IProfileExceptionHelper;
 
             profileRepository = {
-                create: (profile: Profile) => null,
+                create: (profile: Profile) => Promise.resolve(profile),
                 find: (id: string) => null,
             } as IProfileRepository;
 
@@ -55,34 +55,12 @@ describe('ProfileService', () => {
             profileService = null;
         });
 
-        it('should call setUserName of profile', async () => {
+        it('should set user name profile', async () => {
             const profile: Profile = Profile.empty();
 
-            const setUserNameSpy: sinon.SinonSpy = sinon.spy(profile, 'setUserName');
+            const result: Profile = await profileService.create(profile, 'userName');
 
-            await profileService.create(profile, 'userName');
-
-            expect(setUserNameSpy.calledOnce).to.be.true;
-        });
-
-        it('should call throwIfProfileExist of profileExceptionHelper', async () => {
-            const profile: Profile = Profile.empty();
-
-            const throwIfProfileExistSpy: sinon.SinonSpy = sinon.spy(profileExceptionHelper, 'throwIfProfileExist');
-
-            await profileService.create(profile, null);
-
-            expect(throwIfProfileExistSpy.calledOnce).to.be.true;
-        });
-
-        it('should call throwIfUserNotExist of userExceptionHelper', async () => {
-            const profile: Profile = Profile.empty();
-
-            const throwIfUserNotExistSpy: sinon.SinonSpy = sinon.spy(userExceptionHelper, 'throwIfUserNotExist');
-
-            await profileService.create(profile, null);
-
-            expect(throwIfUserNotExistSpy.calledOnce).to.be.true;
+            expect(result.userName).to.be.eq('userName');
         });
 
         it('should call create of profileRepository given profile id does not exist', async () => {
@@ -123,7 +101,7 @@ describe('ProfileService', () => {
             expect(createSpy.calledOnce).to.be.false;
         });
 
-        it('should not call create of profileRepository given username not does exist', async () => {
+        it('should not call create of profileRepository given user name not does exist', async () => {
             const profile: Profile = Profile.empty();
 
             sinon.stub(userExceptionHelper, 'throwIfUserNotExist').callsFake(() => Promise.reject(null));
