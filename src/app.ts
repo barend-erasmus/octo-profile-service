@@ -4,11 +4,11 @@ import * as express from 'express';
 import * as path from 'path';
 import * as yargs from 'yargs';
 import { config } from './config';
+import { CustomMiddleware } from './middleware/custom-middleware';
 import { BaseRouter } from './routes/base';
 import { ProfileRouter } from './routes/profile';
 import { UsageRouter } from './routes/usage';
 import { UserRouter } from './routes/user';
-import { CustomMiddleware } from './middleware/custom-middleware';
 
 const argv = yargs.argv;
 const app = express();
