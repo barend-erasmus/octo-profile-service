@@ -18,6 +18,16 @@ export class ProfileValidator implements IProfileValidator {
     public  getValidationMessages(value: Profile): string[] {
         const messages: string[] = [];
 
+        messages.concat(this.getValidationMessagesForContactInformation(value.contactInformation));
+
+        if (!value.about) {
+            messages.push('About is required');
+        }
+
+        if (!value.message) {
+            messages.push('Message is required');
+        }
+
         return messages;
     }
 
@@ -40,6 +50,6 @@ export class ProfileValidator implements IProfileValidator {
             messages.push('Email Address is invalid');
         }
     
-        return [];
+        return messages;
     }
 }

@@ -34,14 +34,11 @@ function customMiddleware(req: express.Request, res: express.Response, next: exp
 function requireUser(req: express.Request, res: express.Response, next: express.NextFunction) {
 
     try {
-        const decodedToken: any = jsonwebtoken.verify(req.get('Authorization').split(' ')[1], '=H6gMEL2h-8-UD6j');
 
-        if (!decodedToken) {
+        if (!req['user']) {
             res.status(401).end();
             return;
         }
-
-        req['user'] = decodedToken.userName;
 
         next();
 
@@ -56,8 +53,8 @@ app.get('/api/database/sync', customMiddleware, BaseRouter.sync);
 
 app.route('/api/profile')
     .get(customMiddleware, ProfileRouter.get)
-    .post(requireUser, ProfileRouter.post)
-    .put(requireUser, ProfileRouter.put);
+    .post(customMiddleware, requireUser, ProfileRouter.post)
+    .put(customMiddleware, requireUser, ProfileRouter.put);
 
 app.route('/api/usage/counts')
     .get(UsageRouter.counts);

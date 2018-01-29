@@ -15,10 +15,7 @@ export class UsageRouter extends BaseRouter {
             res.json(result);
 
         } catch (err) {
-            res.status(500).json({
-                message: err.message,
-                stack: err.stack,
-            });
+            res.status(500).json(err);
         }
     }
 }

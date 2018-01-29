@@ -1,8 +1,8 @@
 export class ValidationError extends Error {
     constructor(
-        message: string,
-        detailedMessages: string[],
+        public commonMessage: string,
+        public detailedMessages: string[],
     ) {
-        super(message);
+        super(commonMessage);
     }
 }

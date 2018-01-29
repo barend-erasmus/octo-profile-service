@@ -22,10 +22,7 @@ export class ProfileRouter extends BaseRouter {
                 res.json(profiles);
             }
         } catch (err) {
-            res.status(500).json({
-                message: err.message,
-                stack: err.stack,
-            });
+            res.status(500).json(err);
         }
     }
 
@@ -43,10 +40,7 @@ export class ProfileRouter extends BaseRouter {
             res.json(profile);
 
         } catch (err) {
-            res.status(500).json({
-                message: err.message,
-                stack: err.stack,
-            });
+            res.status(500).json(err);
         }
     }
 
@@ -58,10 +52,7 @@ export class ProfileRouter extends BaseRouter {
             res.json(profile);
 
         } catch (err) {
-            res.status(500).json({
-                message: err.message,
-                stack: err.stack,
-            });
+            res.status(500).json(err);
         }
     }
 }

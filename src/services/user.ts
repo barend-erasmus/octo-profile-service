@@ -2,15 +2,16 @@ import { User } from '../entities/user';
 import { IHashStrategy } from '../interfaces/hash-strategy';
 import { IUserExceptionHelper } from '../interfaces/user-exception-helper';
 import { IUserRepository } from '../repositories/user';
-import { IStringValidator } from '../interfaces/string-validator';
+import { IUserValidator } from '../interfaces/user-validator';
+import { ValidationError } from '../errors/validation-error';
 
 export class UserService {
 
     constructor(
         private hashStrategy: IHashStrategy,
-        private emailAddressValidator: IStringValidator,
         private userExceptionHelper: IUserExceptionHelper,
         private userRepository: IUserRepository,
+        private userValidator: IUserValidator,
     ) {
 
     }
@@ -31,11 +32,9 @@ export class UserService {
 
     public async create(user: User): Promise<User> {
 
-        await this.userExceptionHelper.throwIfUserExist(user.userName);
+        this.throwIfUserInvalid(user);
 
-        if (!this.emailAddressValidator.validate(user.userName)) {
-            throw new Error('Invallid Email Address');
-        }
+        await this.userExceptionHelper.throwIfUserExist(user.userName);
 
         const hashedPassword: string = this.hashStrategy.hash(user.password);
 
@@ -57,5 +56,13 @@ export class UserService {
 
         return user;
 
+    }
+
+    private throwIfUserInvalid(user: User): void {
+        const validationMessages: string[] = this.userValidator.getValidationMessages(user);
+
+        if (validationMessages.length !== 0) {
+            throw new ValidationError('User is invalid', validationMessages);
+        }
     }
 }

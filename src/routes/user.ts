@@ -45,10 +45,7 @@ export class UserRouter extends BaseRouter {
             }
 
         } catch (err) {
-            res.status(500).json({
-                message: err.message,
-                stack: err.stack,
-            });
+            res.status(500).json(err);
         }
     }
 
@@ -60,10 +57,7 @@ export class UserRouter extends BaseRouter {
             res.json(user);
 
         } catch (err) {
-            res.status(500).json({
-                message: err.message,
-                stack: err.stack,
-            });
+            res.status(500).json(err);
         }
     }
 }
