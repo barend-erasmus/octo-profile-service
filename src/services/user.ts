@@ -6,6 +6,7 @@ import { IHashStrategy } from '../interfaces/hash-strategy';
 import { IUserExceptionHelper } from '../interfaces/user-exception-helper';
 import { IUserValidator } from '../interfaces/user-validator';
 import { IUserRepository } from '../repositories/user';
+import { ValidationMessage } from "../models/validation-message";
 
 @injectable()
 export class UserService {
@@ -66,7 +67,7 @@ export class UserService {
     }
 
     private throwIfUserInvalid(user: User): void {
-        const validationMessages: string[] = this.userValidator.getValidationMessages(user);
+        const validationMessages: ValidationMessage[] = this.userValidator.getValidationMessages(user);
 
         if (validationMessages.length !== 0) {
             throw new ValidationError('User is invalid', validationMessages);

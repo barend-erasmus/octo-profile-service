@@ -9,6 +9,7 @@ import { IProfileValidator } from '../interfaces/profile-validator';
 import { IUserExceptionHelper } from '../interfaces/user-exception-helper';
 import { IProfileRepository } from '../repositories/profile';
 import { IUserRepository } from '../repositories/user';
+import { ValidationMessage } from "../models/validation-message";
 
 @injectable()
 export class ProfileService {
@@ -97,7 +98,7 @@ export class ProfileService {
     }
 
     private throwIfProfileInvalid(profile: Profile): void {
-        const validationMessages: string[] = this.profileValidator.getValidationMessages(profile);
+        const validationMessages: ValidationMessage[] = this.profileValidator.getValidationMessages(profile);
 
         if (validationMessages.length !== 0) {
             throw new ValidationError('Profile is invalid', validationMessages);
