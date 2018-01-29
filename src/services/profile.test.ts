@@ -33,7 +33,7 @@ describe('ProfileService', () => {
             } as IProfileRepository;
 
             profileValidationStrategy = {
-                getValidationMessages: (profile: Profile) => null,
+                getValidationMessages: (profile: Profile) => [],
             } as IProfileValidationStrategy;
 
             userExceptionHelper = {
@@ -93,6 +93,20 @@ describe('ProfileService', () => {
             await profileService.create(profile, null);
 
             expect(createSpy.calledOnce).to.be.true;
+        });
+
+        it('should not call create of profileRepository given profile is invalid', async () => {
+            const profile: Profile = Profile.empty();
+
+            sinon.stub(profileValidationStrategy, 'getValidationMessages').callsFake(() => ['invalid something']);
+
+            const createSpy: sinon.SinonSpy = sinon.spy(profileRepository, 'create');
+
+            try {
+                await profileService.create(profile, null);
+            } catch (err) { }
+
+            expect(createSpy.calledOnce).to.be.false;
         });
 
         it('should not call create of profileRepository given profile id does exist', async () => {
