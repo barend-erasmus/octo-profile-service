@@ -49,7 +49,7 @@ export class ProfileValidator implements IProfileValidator {
         } else if (!this.emailAddressValidator.validate(contactInformation.emailAddress)) {
             messages.push('Email Address is invalid');
         }
-    
+
         return messages;
     }
 }

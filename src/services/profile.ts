@@ -3,10 +3,10 @@ import { User } from '../entities/user';
 import { WorkExperience } from '../entities/work-experience';
 import { ValidationError } from '../errors/validation-error';
 import { IProfileExceptionHelper } from '../interfaces/profile-exception-helper';
+import { IProfileValidator } from '../interfaces/profile-validator';
 import { IUserExceptionHelper } from '../interfaces/user-exception-helper';
 import { IProfileRepository } from '../repositories/profile';
 import { IUserRepository } from '../repositories/user';
-import { IProfileValidator } from '../interfaces/profile-validator';
 
 export class ProfileService {
 

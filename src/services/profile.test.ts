@@ -3,11 +3,11 @@ import 'mocha';
 import * as sinon from 'sinon';
 import { Profile } from '../entities/profile';
 import { IProfileExceptionHelper } from '../interfaces/profile-exception-helper';
+import { IProfileValidator } from '../interfaces/profile-validator';
 import { IUserExceptionHelper } from '../interfaces/user-exception-helper';
 import { IProfileRepository } from '../repositories/profile';
 import { IUserRepository } from '../repositories/user';
 import { ProfileService } from './profile';
-import { IProfileValidator } from '../interfaces/profile-validator';
 
 describe('ProfileService', () => {
 

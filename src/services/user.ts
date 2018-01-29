@@ -1,9 +1,9 @@
 import { User } from '../entities/user';
+import { ValidationError } from '../errors/validation-error';
 import { IHashStrategy } from '../interfaces/hash-strategy';
 import { IUserExceptionHelper } from '../interfaces/user-exception-helper';
-import { IUserRepository } from '../repositories/user';
 import { IUserValidator } from '../interfaces/user-validator';
-import { ValidationError } from '../errors/validation-error';
+import { IUserRepository } from '../repositories/user';
 
 export class UserService {
 

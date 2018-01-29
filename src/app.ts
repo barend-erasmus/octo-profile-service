@@ -1,7 +1,6 @@
 import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
 import * as express from 'express';
-import * as jsonwebtoken from 'jsonwebtoken';
 import * as path from 'path';
 import * as yargs from 'yargs';
 import { config } from './config';
@@ -9,6 +8,7 @@ import { BaseRouter } from './routes/base';
 import { ProfileRouter } from './routes/profile';
 import { UsageRouter } from './routes/usage';
 import { UserRouter } from './routes/user';
+import { CustomMiddleware } from './middleware/custom-middleware';
 
 const argv = yargs.argv;
 const app = express();
@@ -17,44 +17,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(cors());
 
-function customMiddleware(req: express.Request, res: express.Response, next: express.NextFunction) {
-
-    try {
-        const decodedToken: any = jsonwebtoken.verify(req.get('Authorization').split(' ')[1], '=H6gMEL2h-8-UD6j');
-
-        req['user'] = decodedToken.userName;
-
-    } catch (err) {
-
-    }
-
-    next();
-}
-
-function requireUser(req: express.Request, res: express.Response, next: express.NextFunction) {
-
-    try {
-
-        if (!req['user']) {
-            res.status(401).end();
-            return;
-        }
-
-        next();
-
-    } catch (err) {
-        res.status(400).end();
-        return;
-    }
-
-}
-
-app.get('/api/database/sync', customMiddleware, BaseRouter.sync);
+app.get('/api/database/sync', CustomMiddleware.default, BaseRouter.sync);
 
 app.route('/api/profile')
-    .get(customMiddleware, ProfileRouter.get)
-    .post(customMiddleware, requireUser, ProfileRouter.post)
-    .put(customMiddleware, requireUser, ProfileRouter.put);
+    .get(CustomMiddleware.default, ProfileRouter.get)
+    .post(CustomMiddleware.default, CustomMiddleware.hasToBeAuthenticated, ProfileRouter.post)
+    .put(CustomMiddleware.default, CustomMiddleware.hasToBeAuthenticated, ProfileRouter.put);
 
 app.route('/api/usage/counts')
     .get(UsageRouter.counts);

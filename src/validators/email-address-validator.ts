@@ -1,4 +1,4 @@
-import { IStringValidator } from "../interfaces/string-validator";
+import { IStringValidator } from '../interfaces/string-validator';
 
 export class EmailAddressValidator implements IStringValidator {
     public validate(value: string): boolean {
