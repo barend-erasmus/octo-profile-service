@@ -3,11 +3,11 @@ import 'mocha';
 import * as sinon from 'sinon';
 import { Profile } from '../entities/profile';
 import { IProfileExceptionHelper } from '../interfaces/profile-exception-helper';
-import { IProfileValidationStrategy } from '../interfaces/profile-validation-strategy';
 import { IUserExceptionHelper } from '../interfaces/user-exception-helper';
 import { IProfileRepository } from '../repositories/profile';
 import { IUserRepository } from '../repositories/user';
 import { ProfileService } from './profile';
+import { IProfileValidator } from '../interfaces/profile-validator';
 
 describe('ProfileService', () => {
 
@@ -15,7 +15,7 @@ describe('ProfileService', () => {
 
         let profileExceptionHelper: IProfileExceptionHelper = null;
         let profileRepository: IProfileRepository = null;
-        let profileValidationStrategy: IProfileValidationStrategy = null;
+        let profileValidator: IProfileValidator = null;
         let userExceptionHelper: IUserExceptionHelper = null;
         let userRepository: IUserRepository = null;
 
@@ -32,9 +32,9 @@ describe('ProfileService', () => {
                 find: (id: string) => null,
             } as IProfileRepository;
 
-            profileValidationStrategy = {
+            profileValidator = {
                 getValidationMessages: (profile: Profile) => [],
-            } as IProfileValidationStrategy;
+            } as IProfileValidator;
 
             userExceptionHelper = {
                 throwIfUserNotExist: (userName: string) => null,
@@ -42,7 +42,7 @@ describe('ProfileService', () => {
 
             userRepository = {} as IUserRepository;
 
-            profileService = new ProfileService(profileExceptionHelper, profileRepository, profileValidationStrategy, userExceptionHelper, userRepository);
+            profileService = new ProfileService(profileExceptionHelper, profileRepository, profileValidator, userExceptionHelper, userRepository);
         });
 
         afterEach(async () => {
@@ -98,7 +98,7 @@ describe('ProfileService', () => {
         it('should not call create of profileRepository given profile is invalid', async () => {
             const profile: Profile = Profile.empty();
 
-            sinon.stub(profileValidationStrategy, 'getValidationMessages').callsFake(() => ['invalid something']);
+            sinon.stub(profileValidator, 'getValidationMessages').callsFake(() => ['invalid something']);
 
             const createSpy: sinon.SinonSpy = sinon.spy(profileRepository, 'create');
 

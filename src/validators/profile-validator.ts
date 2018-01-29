@@ -1,12 +1,12 @@
 import { ContactInformation } from '../entities/contact-infomation';
 import { Profile } from '../entities/profile';
-import { IProfileValidationStrategy } from '../interfaces/profile-validation-strategy';
-import { IStringValidationStrategy } from '../interfaces/string-validation-strategy';
+import { IProfileValidator } from '../interfaces/profile-validator';
+import { IStringValidator } from '../interfaces/string-validator';
 
-export class ProfileValidationStrategy implements IProfileValidationStrategy {
+export class ProfileValidator implements IProfileValidator {
 
     constructor(
-        private emailAddressValidationStrategy: IStringValidationStrategy,
+        private emailAddressValidator: IStringValidator,
     ) {
 
     }
@@ -36,7 +36,7 @@ export class ProfileValidationStrategy implements IProfileValidationStrategy {
 
         if (!contactInformation.emailAddress) {
             messages.push('Email Address is required');
-        } else if (!this.emailAddressValidationStrategy.validate(contactInformation.emailAddress)) {
+        } else if (!this.emailAddressValidator.validate(contactInformation.emailAddress)) {
             messages.push('Email Address is invalid');
         }
     

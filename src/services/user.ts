@@ -1,14 +1,14 @@
 import { User } from '../entities/user';
 import { IHashStrategy } from '../interfaces/hash-strategy';
-import { IStringValidationStrategy } from '../interfaces/string-validation-strategy';
 import { IUserExceptionHelper } from '../interfaces/user-exception-helper';
 import { IUserRepository } from '../repositories/user';
+import { IStringValidator } from '../interfaces/string-validator';
 
 export class UserService {
 
     constructor(
         private hashStrategy: IHashStrategy,
-        private emailAddressValidationStrategy: IStringValidationStrategy,
+        private emailAddressValidator: IStringValidator,
         private userExceptionHelper: IUserExceptionHelper,
         private userRepository: IUserRepository,
     ) {
@@ -33,7 +33,7 @@ export class UserService {
 
         await this.userExceptionHelper.throwIfUserExist(user.userName);
 
-        if (!this.emailAddressValidationStrategy.validate(user.userName)) {
+        if (!this.emailAddressValidator.validate(user.userName)) {
             throw new Error('Invallid Email Address');
         }
 

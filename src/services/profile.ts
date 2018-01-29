@@ -3,17 +3,17 @@ import { User } from '../entities/user';
 import { WorkExperience } from '../entities/work-experience';
 import { ValidationError } from '../errors/validation-error';
 import { IProfileExceptionHelper } from '../interfaces/profile-exception-helper';
-import { IProfileValidationStrategy } from '../interfaces/profile-validation-strategy';
 import { IUserExceptionHelper } from '../interfaces/user-exception-helper';
 import { IProfileRepository } from '../repositories/profile';
 import { IUserRepository } from '../repositories/user';
+import { IProfileValidator } from '../interfaces/profile-validator';
 
 export class ProfileService {
 
     constructor(
         private profileExceptionHelper: IProfileExceptionHelper,
         private profileRepository: IProfileRepository,
-        private profileValidationStrategy: IProfileValidationStrategy,
+        private profileValidator: IProfileValidator,
         private userExceptionHelper: IUserExceptionHelper,
         private userRepository: IUserRepository,
     ) {
@@ -89,7 +89,7 @@ export class ProfileService {
     }
 
     private throwIfProfileInvalid(profile: Profile): void {
-        const validationMessages: string[] = this.profileValidationStrategy.getValidationMessages(profile);
+        const validationMessages: string[] = this.profileValidator.getValidationMessages(profile);
 
         if (validationMessages.length !== 0) {
             throw new ValidationError('Profile is invalid', validationMessages);

@@ -1,7 +1,7 @@
 import { Profile } from '../entities/profile';
-import { IValidationStrategy } from './validation-strategy';
+import { IValidator } from './validator';
 
-export interface IProfileValidationStrategy extends IValidationStrategy<Profile> {
+export interface IProfileValidator extends IValidator<Profile> {
 
     validate(value: Profile): boolean;
 
