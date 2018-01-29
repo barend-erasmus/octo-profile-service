@@ -18,6 +18,7 @@ import { UserValidator } from '../validators/user-validator';
 import { config } from './../config';
 import { ProfileRepository } from './../repositories/sequelize/profile';
 import { ProfileService } from './../services/profile';
+import { container } from '../ioc';
 
 export class BaseRouter {
 
@@ -42,39 +43,21 @@ export class BaseRouter {
 
     public static getProfileService(): ProfileService {
 
-        const profileRepository: ProfileRepository = new ProfileRepository(config.database.host, config.database.userName, config.database.password);
-        const userRepository: UserRepository = new UserRepository(config.database.host, config.database.userName, config.database.password);
-
-        const exceptionHelper: ExceptionHelper = new ExceptionHelper(profileRepository, userRepository);
-
-        const profileValidator: IProfileValidator = new ProfileValidator(new EmailAddressValidator());
-
-        const profileService: ProfileService = new ProfileService(exceptionHelper, profileRepository, profileValidator, exceptionHelper, userRepository);
+        const profileService: ProfileService = container.get<ProfileService>('ProfileService');
 
         return profileService;
     }
 
     public static getUsageService(): UsageService {
 
-        const profileRepository: ProfileRepository = new ProfileRepository(config.database.host, config.database.userName, config.database.password);
-        const usageRepository: UsageRepository = new UsageRepository(config.database.host, config.database.userName, config.database.password);
-
-        const usageService: UsageService = new UsageService(usageRepository, profileRepository);
+        const usageService: UsageService = container.get<UsageService>('UsageService');
 
         return usageService;
     }
 
     public static getUserService(): UserService {
 
-        const userRepository: UserRepository = new UserRepository(config.database.host, config.database.userName, config.database.password);
-
-        const userExceptionHelper: IUserExceptionHelper = new ExceptionHelper(null, userRepository);
-
-        const hashStrategy: IHashStrategy = new MD5HashStrategy();
-
-        const userValidator: IUserValidator = new UserValidator(new EmailAddressValidator());
-
-        const userService: UserService = new UserService(hashStrategy, userExceptionHelper, userRepository, userValidator);
+        const userService: UserService = container.get<UserService>('UserService');
 
         return userService;
     }

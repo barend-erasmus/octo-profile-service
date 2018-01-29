@@ -1,7 +1,10 @@
+import "reflect-metadata";
+import { injectable, inject } from "inversify";
 import { User } from '../../entities/user';
 import { IUserRepository } from './../user';
 import { BaseRepository } from './base';
 
+@injectable()
 export class UserRepository extends BaseRepository implements IUserRepository {
 
     constructor(host: string, userName: string, password: string) {

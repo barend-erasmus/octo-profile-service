@@ -1,3 +1,5 @@
+import "reflect-metadata";
+import { injectable, inject } from "inversify";
 import * as crypto from 'crypto';
 import * as express from 'express';
 import * as isBot from 'isbot';
@@ -8,10 +10,13 @@ import { UsageCounts } from '../models/usage-counts';
 import { IProfileRepository } from '../repositories/profile';
 import { IUsageRepository } from '../repositories/usage';
 
+@injectable()
 export class UsageService {
 
     constructor(
+        @inject("IUsageRepository")
         private usageRepository: IUsageRepository,
+        @inject("IProfileRepository")
         private profileRepository: IProfileRepository,
     ) {
 

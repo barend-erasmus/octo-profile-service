@@ -1,3 +1,5 @@
+import "reflect-metadata";
+import { injectable, inject } from "inversify";
 import { Address } from '../../entities/address';
 import { ContactInformation } from '../../entities/contact-infomation';
 import { Education } from '../../entities/education';
@@ -10,6 +12,7 @@ import { WorkExperience } from '../../entities/work-experience';
 import { IProfileRepository } from './../profile';
 import { BaseRepository } from './base';
 
+@injectable()
 export class ProfileRepository extends BaseRepository implements IProfileRepository {
 
     constructor(host: string, userName: string, password: string) {

@@ -1,3 +1,5 @@
+import "reflect-metadata";
+import { injectable, inject } from "inversify";
 import { Profile } from '../entities/profile';
 import { User } from '../entities/user';
 import { WorkExperience } from '../entities/work-experience';
@@ -8,13 +10,19 @@ import { IUserExceptionHelper } from '../interfaces/user-exception-helper';
 import { IProfileRepository } from '../repositories/profile';
 import { IUserRepository } from '../repositories/user';
 
+@injectable()
 export class ProfileService {
 
     constructor(
+        @inject("IProfileExceptionHelper")
         private profileExceptionHelper: IProfileExceptionHelper,
+        @inject("IProfileRepository")
         private profileRepository: IProfileRepository,
+        @inject("IProfileValidator")
         private profileValidator: IProfileValidator,
+        @inject("IUserExceptionHelper")
         private userExceptionHelper: IUserExceptionHelper,
+        @inject("IUserRepository")
         private userRepository: IUserRepository,
     ) {
 

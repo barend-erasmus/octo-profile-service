@@ -1,11 +1,15 @@
+import "reflect-metadata";
+import { injectable, inject } from "inversify";
 import { ContactInformation } from '../entities/contact-infomation';
 import { Profile } from '../entities/profile';
 import { IProfileValidator } from '../interfaces/profile-validator';
 import { IStringValidator } from '../interfaces/string-validator';
 
+@injectable()
 export class ProfileValidator implements IProfileValidator {
 
     constructor(
+        @inject("EmailAddressValidator")
         private emailAddressValidator: IStringValidator,
     ) {
 

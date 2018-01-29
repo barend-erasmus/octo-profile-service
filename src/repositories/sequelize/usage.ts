@@ -1,8 +1,11 @@
+import "reflect-metadata";
+import { injectable, inject } from "inversify";
 import * as Sequelize from 'sequelize';
 import { Usage } from '../../entities/usage';
 import { IUsageRepository } from './../usage';
 import { BaseRepository } from './base';
 
+@injectable()
 export class UsageRepository extends BaseRepository implements IUsageRepository {
 
     constructor(host: string, userName: string, password: string) {

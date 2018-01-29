@@ -1,3 +1,5 @@
+import "reflect-metadata";
+import { injectable } from "inversify";
 import { Profile } from '../entities/profile';
 import { IValidator } from './validator';
 
