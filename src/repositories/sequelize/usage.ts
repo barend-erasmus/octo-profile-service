@@ -1,5 +1,5 @@
-import "reflect-metadata";
-import { injectable, inject } from "inversify";
+import { inject, injectable } from 'inversify';
+import 'reflect-metadata';
 import * as Sequelize from 'sequelize';
 import { Usage } from '../../entities/usage';
 import { IUsageRepository } from './../usage';

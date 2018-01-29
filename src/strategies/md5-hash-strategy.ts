@@ -1,6 +1,6 @@
-import "reflect-metadata";
-import { injectable, inject } from "inversify";
 import * as crypto from 'crypto';
+import { inject, injectable } from 'inversify';
+import 'reflect-metadata';
 import { IHashStrategy } from '../interfaces/hash-strategy';
 
 @injectable()

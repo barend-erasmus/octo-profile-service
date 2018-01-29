@@ -1,7 +1,8 @@
-import "reflect-metadata";
-import { injectable, inject } from "inversify";
+import { inject, injectable } from 'inversify';
+import 'reflect-metadata';
 import { Profile } from '../entities/profile';
 import { User } from '../entities/user';
+import { ValidationError } from '../errors/validation-error';
 import { IProfileExceptionHelper } from '../interfaces/profile-exception-helper';
 import { IUserExceptionHelper } from '../interfaces/user-exception-helper';
 import { IProfileRepository } from '../repositories/profile';
@@ -11,9 +12,9 @@ import { IUserRepository } from '../repositories/user';
 export class ExceptionHelper implements IProfileExceptionHelper, IUserExceptionHelper {
 
     constructor(
-        @inject("IProfileRepository")
+        @inject('IProfileRepository')
         private profileRepository: IProfileRepository,
-        @inject("IUserRepository")
+        @inject('IUserRepository')
         private userRepository: IUserRepository,
     ) {
 
@@ -22,8 +23,8 @@ export class ExceptionHelper implements IProfileExceptionHelper, IUserExceptionH
     public async throwIfProfileExist(id: string): Promise<void> {
         const profile: Profile = await this.profileRepository.find(id);
 
-        if (profile == null) {
-            throw new Error('Profile already exist');
+        if (profile) {
+            throw new ValidationError('Profile already exist', null);
         }
     }
 
@@ -31,7 +32,7 @@ export class ExceptionHelper implements IProfileExceptionHelper, IUserExceptionH
         const profile: Profile = await this.profileRepository.find(id);
 
         if (!profile) {
-            throw new Error('Profile does not exist');
+            throw new ValidationError('Profile does not exist', null);
         }
 
         return profile;
@@ -39,7 +40,7 @@ export class ExceptionHelper implements IProfileExceptionHelper, IUserExceptionH
 
     public throwIfUserNameMismatch(user: User, profile: Profile): void {
         if (user.userName !== profile.userName) {
-            throw new Error('Mismatched UserName');
+            throw new ValidationError('Mismatched UserName', null);
         }
     }
 
@@ -47,7 +48,7 @@ export class ExceptionHelper implements IProfileExceptionHelper, IUserExceptionH
         const user: User = await this.userRepository.find(userName);
 
         if (user) {
-            throw new Error('UserName already exist');
+            throw new ValidationError('UserName already exist', null);
         }
     }
 
@@ -55,7 +56,7 @@ export class ExceptionHelper implements IProfileExceptionHelper, IUserExceptionH
         const user: User = await this.userRepository.find(userName);
 
         if (!user) {
-            throw new Error('UserName does not exist');
+            throw new ValidationError('UserName does not exist', null);
         }
 
         return user;

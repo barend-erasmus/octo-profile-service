@@ -1,5 +1,5 @@
-import "reflect-metadata";
-import { injectable, inject } from "inversify";
+import { inject, injectable } from 'inversify';
+import 'reflect-metadata';
 import { Address } from '../../entities/address';
 import { ContactInformation } from '../../entities/contact-infomation';
 import { Education } from '../../entities/education';
@@ -27,36 +27,50 @@ export class ProfileRepository extends BaseRepository implements IProfileReposit
             },
         });
 
-        const result: any = await BaseRepository.models.Profile.create(profile, {
-            include: [
-                {
-                    include: [
-                        {
-                            model: BaseRepository.models.Address,
-                        },
-                    ],
-                    model: BaseRepository.models.ContactInformation,
-                },
-                {
-                    model: BaseRepository.models.Education,
-                },
-                {
-                    model: BaseRepository.models.PersonalInformation,
-                },
-                {
-                    model: BaseRepository.models.PortfolioItem,
-                },
-                {
-                    model: BaseRepository.models.Skill,
-                },
-                {
-                    model: BaseRepository.models.SocialInformation,
-                },
-                {
-                    model: BaseRepository.models.WorkExperience,
-                },
-            ],
-        });
+        const result: any = await BaseRepository.models.Profile.create({
+            about: profile.about,
+            contactInformation: profile.contactInformation,
+            education: profile.education,
+            key: profile.id,
+            image: profile.image,
+            message: profile.message,
+            personalInformation: profile.personalInformation,
+            portfolio: profile.portfolio,
+            skills: profile.skills,
+            socialInformation: profile.socialInformation,
+            type: profile.type,
+            userId: user.id,
+            workExperiences: profile.workExperiences,
+        }, {
+                include: [
+                    {
+                        include: [
+                            {
+                                model: BaseRepository.models.Address,
+                            },
+                        ],
+                        model: BaseRepository.models.ContactInformation,
+                    },
+                    {
+                        model: BaseRepository.models.Education,
+                    },
+                    {
+                        model: BaseRepository.models.PersonalInformation,
+                    },
+                    {
+                        model: BaseRepository.models.PortfolioItem,
+                    },
+                    {
+                        model: BaseRepository.models.Skill,
+                    },
+                    {
+                        model: BaseRepository.models.SocialInformation,
+                    },
+                    {
+                        model: BaseRepository.models.WorkExperience,
+                    },
+                ],
+            });
 
         return profile;
     }
@@ -261,6 +275,7 @@ export class ProfileRepository extends BaseRepository implements IProfileReposit
     }
 
     private mapProfile(profile: any): Profile {
+
         if (!profile) {
             return null;
         }
@@ -290,13 +305,13 @@ export class ProfileRepository extends BaseRepository implements IProfileReposit
             profile.portfolioItems.map((portfolioItem) => new PortfolioItem(portfolioItem.description, portfolioItem.image, portfolioItem.link, portfolioItem.name)),
             profile.skills.map((skill) => new Skill(skill.description, skill.level, skill.name, skill.years)),
             new SocialInformation(
-                profile.sociallInformation.googlePlusLink,
-                profile.sociallInformation.linkedInLink,
-                profile.sociallInformation.twitterLink,
-                profile.sociallInformation.website,
+                profile.socialInformation.googlePlusLink,
+                profile.socialInformation.linkedInLink,
+                profile.socialInformation.twitterLink,
+                profile.socialInformation.website,
             ),
             profile.type,
-            profile.user.userName,
+            null,
             profile.workExperiences.map((workExperience) => new WorkExperience(workExperience.companyName, workExperience.currentlyEmployed, workExperience.description, workExperience.from, workExperience.location, workExperience.position, workExperience.to)),
         );
     }

@@ -1,9 +1,9 @@
-import "reflect-metadata";
-import { injectable, inject } from "inversify";
 import * as crypto from 'crypto';
 import * as express from 'express';
+import { inject, injectable } from 'inversify';
 import * as isBot from 'isbot';
 import * as moment from 'moment';
+import 'reflect-metadata';
 import { Profile } from '../entities/profile';
 import { Usage } from '../entities/usage';
 import { UsageCounts } from '../models/usage-counts';
@@ -14,9 +14,9 @@ import { IUsageRepository } from '../repositories/usage';
 export class UsageService {
 
     constructor(
-        @inject("IUsageRepository")
+        @inject('IUsageRepository')
         private usageRepository: IUsageRepository,
-        @inject("IProfileRepository")
+        @inject('IProfileRepository')
         private profileRepository: IProfileRepository,
     ) {
 

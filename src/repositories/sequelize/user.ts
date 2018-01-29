@@ -1,5 +1,5 @@
-import "reflect-metadata";
-import { injectable, inject } from "inversify";
+import { inject, injectable } from 'inversify';
+import 'reflect-metadata';
 import { User } from '../../entities/user';
 import { IUserRepository } from './../user';
 import { BaseRepository } from './base';

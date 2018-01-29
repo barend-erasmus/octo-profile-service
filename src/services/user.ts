@@ -1,24 +1,24 @@
-import "reflect-metadata";
-import { injectable, inject } from "inversify";
+import { inject, injectable } from 'inversify';
+import 'reflect-metadata';
 import { User } from '../entities/user';
 import { ValidationError } from '../errors/validation-error';
 import { IHashStrategy } from '../interfaces/hash-strategy';
 import { IUserExceptionHelper } from '../interfaces/user-exception-helper';
 import { IUserValidator } from '../interfaces/user-validator';
+import { ValidationMessage } from '../models/validation-message';
 import { IUserRepository } from '../repositories/user';
-import { ValidationMessage } from "../models/validation-message";
 
 @injectable()
 export class UserService {
 
     constructor(
-        @inject("IHashStrategy")
+        @inject('IHashStrategy')
         private hashStrategy: IHashStrategy,
-        @inject("IUserExceptionHelper")
+        @inject('IUserExceptionHelper')
         private userExceptionHelper: IUserExceptionHelper,
-        @inject("IUserRepository")
+        @inject('IUserRepository')
         private userRepository: IUserRepository,
-        @inject("IUserValidator")
+        @inject('IUserValidator')
         private userValidator: IUserValidator,
     ) {
 

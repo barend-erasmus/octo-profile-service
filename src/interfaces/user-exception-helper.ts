@@ -7,5 +7,5 @@ export interface IUserExceptionHelper extends IExceptionHelper<User> {
     throwIfUserNameMismatch(user: User, profile: Profile): void;
     throwIfUserExist(userName: string): Promise<void>;
     throwIfUserNotExist(userName: string): Promise<User>;
-    
+
 }

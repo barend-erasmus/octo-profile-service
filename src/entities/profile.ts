@@ -38,8 +38,8 @@ export class Profile extends Entity {
 
     public static getProfileBarendErasmus(): Profile {
         return new Profile(
+            'barend-erasmus',
             'Experienced Software Engineer with a demonstrated history of working in the agriculture and medical industry.',
-            '14 Santa Barbara, 63 Blaauwberg Road, Table View, Cape Town, South Africa, 7441',
             new ContactInformation(
                 new Address('Cape Town', 'South Africa', '14 Santa Barbara', '63 Blaauwberg Road, Table View', '7441'),
                 '0766542813',
@@ -55,7 +55,7 @@ export class Profile extends Entity {
                 ),
             ],
             'https://media-exp2.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAVqAAAAJDk4NTNjMDc4LTczNTctNDZmMC1iMGEyLWQyOTg3ODFhN2E3Mw.jpg',
-            '',
+            'Hello World',
             new PersonalInformation(
                 new Date(1996, 4, 23),
                 'Barend',

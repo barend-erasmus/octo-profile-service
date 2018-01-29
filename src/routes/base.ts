@@ -1,11 +1,13 @@
 import * as express from 'express';
 import { Profile } from '../entities/profile';
 import { User } from '../entities/user';
+import { CustomError } from '../errors/custom-error';
 import { ExceptionHelper } from '../helpers/exception-helper';
 import { IHashStrategy } from '../interfaces/hash-strategy';
 import { IProfileValidator } from '../interfaces/profile-validator';
 import { IUserExceptionHelper } from '../interfaces/user-exception-helper';
 import { IUserValidator } from '../interfaces/user-validator';
+import { container } from '../ioc';
 import { BaseRepository } from '../repositories/sequelize/base';
 import { UsageRepository } from '../repositories/sequelize/usage';
 import { UserRepository } from '../repositories/sequelize/user';
@@ -18,7 +20,6 @@ import { UserValidator } from '../validators/user-validator';
 import { config } from './../config';
 import { ProfileRepository } from './../repositories/sequelize/profile';
 import { ProfileService } from './../services/profile';
-import { container } from '../ioc';
 
 export class BaseRouter {
 
@@ -27,17 +28,17 @@ export class BaseRouter {
 
             await new BaseRepository(config.database.host, config.database.userName, config.database.password).sync(true);
 
-            // let user: User = await BaseRouter.getUserService().find('developersworkspace@gmail.com');
+            let user: User = await BaseRouter.getUserService().find('developersworkspace@gmail.com');
 
-            // if (!user) {
-            //     user = await BaseRouter.getUserService().create(new User('developersworkspace@gmail.com', '12345678'));
-            //     await BaseRouter.getProfileService().create(Profile.getProfileBarendErasmus(), user.userName);
-            // }
+            if (!user) {
+                user = await BaseRouter.getUserService().create(new User('developersworkspace@gmail.com', '12345678'));
+                await BaseRouter.getProfileService().create(Profile.getProfileBarendErasmus(), user.userName);
+            }
 
             res.json(true);
 
         } catch (err) {
-            res.status(500).json(err);
+            res.status(500).json(CustomError.fromError(err));
         }
     }
 

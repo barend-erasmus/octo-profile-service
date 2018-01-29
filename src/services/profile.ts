@@ -1,5 +1,5 @@
-import "reflect-metadata";
-import { injectable, inject } from "inversify";
+import { inject, injectable } from 'inversify';
+import 'reflect-metadata';
 import { Profile } from '../entities/profile';
 import { User } from '../entities/user';
 import { WorkExperience } from '../entities/work-experience';
@@ -7,23 +7,23 @@ import { ValidationError } from '../errors/validation-error';
 import { IProfileExceptionHelper } from '../interfaces/profile-exception-helper';
 import { IProfileValidator } from '../interfaces/profile-validator';
 import { IUserExceptionHelper } from '../interfaces/user-exception-helper';
+import { ValidationMessage } from '../models/validation-message';
 import { IProfileRepository } from '../repositories/profile';
 import { IUserRepository } from '../repositories/user';
-import { ValidationMessage } from "../models/validation-message";
 
 @injectable()
 export class ProfileService {
 
     constructor(
-        @inject("IProfileExceptionHelper")
+        @inject('IProfileExceptionHelper')
         private profileExceptionHelper: IProfileExceptionHelper,
-        @inject("IProfileRepository")
+        @inject('IProfileRepository')
         private profileRepository: IProfileRepository,
-        @inject("IProfileValidator")
+        @inject('IProfileValidator')
         private profileValidator: IProfileValidator,
-        @inject("IUserExceptionHelper")
+        @inject('IUserExceptionHelper')
         private userExceptionHelper: IUserExceptionHelper,
-        @inject("IUserRepository")
+        @inject('IUserRepository')
         private userRepository: IUserRepository,
     ) {
 

@@ -1,5 +1,5 @@
-import "reflect-metadata";
-import { injectable } from "inversify";
+import { injectable } from 'inversify';
+import 'reflect-metadata';
 import { IStringValidator } from '../interfaces/string-validator';
 
 @injectable()

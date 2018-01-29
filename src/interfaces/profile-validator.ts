@@ -1,8 +1,8 @@
-import "reflect-metadata";
-import { injectable } from "inversify";
+import { injectable } from 'inversify';
+import 'reflect-metadata';
 import { Profile } from '../entities/profile';
+import { ValidationMessage } from '../models/validation-message';
 import { IValidator } from './validator';
-import { ValidationMessage } from "../models/validation-message";
 
 export interface IProfileValidator extends IValidator<Profile> {
 

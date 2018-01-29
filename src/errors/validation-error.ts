@@ -1,8 +1,9 @@
-import { ValidationMessage } from "../models/validation-message";
+import { ValidationMessage } from '../models/validation-message';
+import { CustomError } from './custom-error';
 
-export class ValidationError extends Error {
+export class ValidationError extends CustomError {
     constructor(
-        public commonMessage: string,
+        commonMessage: string,
         public validationMessages: ValidationMessage[],
     ) {
         super(commonMessage);

@@ -1,16 +1,16 @@
-import "reflect-metadata";
-import { injectable, inject } from "inversify";
+import { inject, injectable } from 'inversify';
+import 'reflect-metadata';
 import { ContactInformation } from '../entities/contact-infomation';
 import { User } from '../entities/user';
 import { IStringValidator } from '../interfaces/string-validator';
 import { IUserValidator } from '../interfaces/user-validator';
-import { ValidationMessage } from "../models/validation-message";
+import { ValidationMessage } from '../models/validation-message';
 
 @injectable()
 export class UserValidator implements IUserValidator {
 
     constructor(
-        @inject("EmailAddressValidator")
+        @inject('EmailAddressValidator')
         private emailAddressValidator: IStringValidator,
     ) {
 
