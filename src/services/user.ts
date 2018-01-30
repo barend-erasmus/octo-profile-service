@@ -46,6 +46,8 @@ export class UserService {
 
         const hashedPassword: string = this.hashStrategy.hash(user.password);
 
+        user.setPassword(hashedPassword);
+
         user = await this.userRepository.create(user);
 
         user.clearPassword();
