@@ -35,7 +35,7 @@ export class ProfileRepository extends BaseRepository implements IProfileReposit
             image: profile.image,
             message: profile.message,
             personalInformation: profile.personalInformation,
-            portfolio: profile.portfolio,
+            portfolioItems: profile.portfolio,
             skills: profile.skills,
             socialInformation: profile.socialInformation,
             type: profile.type,
