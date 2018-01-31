@@ -124,7 +124,18 @@ export class ProfileRepository extends BaseRepository implements IProfileReposit
         const profiles: any[] = await BaseRepository.models.Profile.findAll({
             include: [
                 {
+                    include: [
+                        {
+                            model: BaseRepository.models.Address,
+                        },
+                    ],
+                    model: BaseRepository.models.ContactInformation,
+                },
+                {
                     model: BaseRepository.models.Education,
+                },
+                {
+                    model: BaseRepository.models.PersonalInformation,
                 },
                 {
                     model: BaseRepository.models.PortfolioItem,
@@ -133,7 +144,7 @@ export class ProfileRepository extends BaseRepository implements IProfileReposit
                     model: BaseRepository.models.Skill,
                 },
                 {
-                    model: BaseRepository.models.User,
+                    model: BaseRepository.models.SocialInformation,
                 },
                 {
                     model: BaseRepository.models.WorkExperience,
