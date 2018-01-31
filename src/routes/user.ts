@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as jsonwebtoken from 'jsonwebtoken';
 import { User } from '../entities/user';
-import { CustomError } from '../errors/custom-error';
+import { OctoProfileError } from '../errors/octo-profile-error';
 import { config } from './../config';
 import { BaseRouter } from './base';
 
@@ -46,7 +46,7 @@ export class UserRouter extends BaseRouter {
             }
 
         } catch (err) {
-            res.status(500).json(CustomError.fromError(err));
+            res.status(500).json(OctoProfileError.fromError(err));
         }
     }
 
@@ -58,7 +58,7 @@ export class UserRouter extends BaseRouter {
             res.json(user);
 
         } catch (err) {
-            res.status(500).json(CustomError.fromError(err));
+            res.status(500).json(OctoProfileError.fromError(err));
         }
     }
 }

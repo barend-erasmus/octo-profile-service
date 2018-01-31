@@ -1,7 +1,7 @@
 import * as express from 'express';
 import { Profile } from '../entities/profile';
 import { WorkExperience } from '../entities/work-experience';
-import { CustomError } from '../errors/custom-error';
+import { OctoProfileError } from '../errors/octo-profile-error';
 import { config } from './../config';
 import { BaseRouter } from './base';
 
@@ -23,7 +23,7 @@ export class ProfileRouter extends BaseRouter {
                 res.json(profiles);
             }
         } catch (err) {
-            res.status(500).json(CustomError.fromError(err));
+            res.status(500).json(OctoProfileError.fromError(err));
         }
     }
 
@@ -41,7 +41,7 @@ export class ProfileRouter extends BaseRouter {
             res.json(profile);
 
         } catch (err) {
-            res.status(500).json(CustomError.fromError(err));
+            res.status(500).json(OctoProfileError.fromError(err));
         }
     }
 
@@ -53,7 +53,7 @@ export class ProfileRouter extends BaseRouter {
             res.json(profile);
 
         } catch (err) {
-            res.status(500).json(CustomError.fromError(err));
+            res.status(500).json(OctoProfileError.fromError(err));
         }
     }
 }

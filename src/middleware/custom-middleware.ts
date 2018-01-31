@@ -37,7 +37,7 @@ export class CustomMiddleware {
 
         const splittedAuthorizationHeader: string[] = authorizationHeader.split(' ');
 
-        if (splittedAuthorizationHeader.length !== 2) {
+        if (splittedAuthorizationHeader.length !== 2 && splittedAuthorizationHeader[0].toLowerCase() === 'bearer') {
             return null;
         }
 

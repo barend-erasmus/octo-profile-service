@@ -1,7 +1,7 @@
 import { ValidationMessage } from '../models/validation-message';
-import { CustomError } from './custom-error';
+import { OctoProfileError } from './octo-profile-error';
 
-export class ValidationError extends CustomError {
+export class ValidationError extends OctoProfileError {
     constructor(
         commonMessage: string,
         public validationMessages: ValidationMessage[],

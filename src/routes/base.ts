@@ -1,7 +1,7 @@
 import * as express from 'express';
 import { Profile } from '../entities/profile';
 import { User } from '../entities/user';
-import { CustomError } from '../errors/custom-error';
+import { OctoProfileError } from '../errors/octo-profile-error';
 import { ExceptionHelper } from '../helpers/exception-helper';
 import { IHashStrategy } from '../interfaces/hash-strategy';
 import { IProfileValidator } from '../interfaces/profile-validator';
@@ -38,7 +38,7 @@ export class BaseRouter {
             res.json(true);
 
         } catch (err) {
-            res.status(500).json(CustomError.fromError(err));
+            res.status(500).json(OctoProfileError.fromError(err));
         }
     }
 
